@@ -1,0 +1,154 @@
+// == Définition des polices ==
+// Utilisons "Quicksand" comme exemple de police arrondie.
+// Assure-toi de l’importer dans ton index.html ou via @import Google Fonts.
+$font-primary: "Quicksand", sans-serif;
+
+// On peut conserver un secondary si besoin, ou le retirer
+$font-secondary: "Segoe UI", sans-serif;
+
+:root {
+  // --- Polices globales ---
+  --font-primary: "Quicksand", sans-serif;
+  --font-secondary: "Segoe UI", sans-serif;
+
+  // --- Rayon des bordures ---
+  --border-radius: 50px;
+
+  // --- Couleurs par défaut (mode jour) ---
+  --color-lightbrown: rgb(153, 115, 95);
+  --color-brown: rgb(142, 110, 89);
+  --color-darkbrown: rgb(77, 57, 48);
+  --color-darkbrown2: rgb(117, 109, 105);
+  --color-darkbrown3: rgb(136, 136, 136);
+
+  --color-accent: rgb(251, 247, 244); /* Fond principal clair */
+  --color-accent-darker: rgb(242, 237, 233);
+  --color-accent-green: rgb(0, 128, 0);
+  --color-snow: rgb(244, 244, 244);
+
+  /* Ancien "lighter-black" devient explicitement pour le jour/nuit */
+  /* On garde le nom si tu l’utilises déjà, mais tu peux renommer */
+  --color-lighter-black: rgb(20, 20, 20);
+
+  // --- Couleurs adaptatives (par défaut : jour) ---
+  --heading-color: var(--color-darkbrown); /* Couleur des titres h1/h2 */
+  --text-color: var(--color-darkbrown3);
+  --background-color: var(--color-accent);
+  --border-color: var(--color-brown);
+  --accent-color: var(--color-accent);
+  --accent-color-darker: var(--color-accent-darker);
+  --box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+
+  /* ======================== */
+  /*   Variables de TAILLES   */
+  /* ======================== */
+  /* h1 */
+  --font-size-h1: 3rem;
+  --line-height-h1: 1; /* pas de marge entre lignes */
+  --font-weight-h1: 700; /* gras */
+  /* h2 */
+  --font-size-h2: 2.125rem;
+  --line-height-h2: 1.75rem;
+  --font-weight-h2: 700; /* gras */
+
+  /* ======================== */
+  /*   Couleurs titres (jour) */
+  /* ======================== */
+  --h1-color-day: rgb(77, 57, 48); /* h1 day */
+  --h2-color-day: rgb(136, 136, 136); /* h2 day */
+
+  /* ======================== */
+  /*   Couleurs titres (nuit) */
+  /* ======================== */
+  --h1-color-night: rgb(251, 247, 244); /* h1 night */
+  --h2-color-night: #ffffff; /* h2 night */
+}
+
+/* ================================================== */
+/*                     MODE JOUR                      */
+/* ================================================== */
+.light-mode {
+  /* Fond principal jour */
+  --background-color: var(--color-accent);
+  /* Couleur du texte normal */
+  --text-color: var(--color-darkbrown3);
+  /* Couleur des titres => h1 / h2 etc. */
+  --heading-color: var(--color-darkbrown);
+  --border-color: var(--color-brown);
+  --accent-color: var(--color-accent-green);
+  --accent-color-darker: var(--color-accent-darker);
+  --box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+
+  /* Les titres */
+  --h1-color: var(--h1-color-day);
+  --h2-color: var(--h2-color-day);
+
+  /* Exemple si tu veux un fond secondaire clair */
+  --background-color-secondary: #f9f9f9;
+}
+
+/* ================================================== */
+/*                     MODE NUIT                      */
+/* ================================================== */
+.dark-mode {
+  /*
+    Fond principal : rgb(20, 20, 20)
+    Fond secondaire (pour d’autres blocs) : #161618
+  */
+  --background-color: rgba(20, 20, 20, 0.947); /* principal */
+  --background-color-secondary: #161618; /* secondaire */
+
+  --text-color: var(--color-snow);
+  --heading-color: var(--color-snow);
+  --border-color: var(--color-darkbrown2);
+  --accent-color: var(--color-accent-green);
+  --accent-color-darker: var(--color-accent-darker);
+  --box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.2);
+
+  /* Les titres */
+  --h1-color: var(--h1-color-night);
+  --h2-color: var(--h2-color-night);
+}
+
+/* ================================================== */
+/*                Mixins / Boutons                    */
+/* ================================================== */
+/* Si tu utilises encore SASS, on peut laisser le code existant */
+@mixin light-theme {
+  --background-color: var(--color-accent);
+  --text-color: var(--color-darkbrown3);
+  --text-color2: var(--color-snow);
+  --accent-color: var(--color-accent);
+  --accent-color-darker: var(--color-accent-darker);
+  --accent-color-green: var(--color-accent-green);
+  --border-color: var(--color-brown);
+  --box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  --container-background-color: var(--color-snow);
+}
+
+@mixin dark-theme {
+  --background-color: rgb(20, 20, 20);
+  --text-color: var(--color-snow);
+  --accent-color: var(--color-accent);
+  --accent-color-darker: var(--color-accent-darker);
+  --border-color: var(--color-darkbrown2);
+  --box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.2);
+  --container-background-color: #161618;
+}
+
+/* Boutons */
+@mixin button-style {
+  padding: 0.75rem 1.5rem; /* ou $button-padding */
+  border-radius: 5px; /* ou $button-border-radius */
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    background-color: var(--accent-color-darker);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+  }
+}

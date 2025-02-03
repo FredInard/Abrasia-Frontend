@@ -1,0 +1,26 @@
+.MealListBox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  .MealListInfo {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    .iconPizza {
+      height: auto;
+      width: 40px;
+    }
+
+    .delete-cross {
+      color: red;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    .delete-cross:hover {
+      transform: scale(1.2);
+    }
+  }
+}

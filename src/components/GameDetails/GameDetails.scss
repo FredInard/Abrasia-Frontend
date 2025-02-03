@@ -1,0 +1,311 @@
+@use "../../styles/index.scss" as *;
+
+/* =================================== */
+/*         MODAL OVERLAY               */
+/* =================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  /* Empêche le mode nuit d'affecter la modale */
+  .dark-mode &,
+  .light-mode & {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* =================================== */
+/*         MODAL CONTENT (SCROLLABLE)  */
+/* =================================== */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff !important; /* Toujours blanc */
+  color: #333 !important; /* Toujours foncé */
+  border-radius: 20px;
+  padding: 20px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh; /* Limite la hauteur pour éviter le débordement */
+  overflow-y: auto; /* Permet le défilement interne si nécessaire */
+  position: relative;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-in-out;
+
+  /* Empêche le mode nuit d'affecter la modale */
+  .dark-mode &,
+  .light-mode & {
+    background: #ffffff !important;
+    color: #333 !important;
+  }
+}
+
+/* Animation d’apparition */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =================================== */
+/*         BOUTON FERMETURE            */
+/* =================================== */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333; /* Toujours foncé */
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  &:focus {
+    outline: 2px solid #333;
+  }
+}
+
+/* =================================== */
+/*         TITRE DU JEU                */
+/* =================================== */
+.game-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #4d3930; /* Marron chaud */
+  margin-bottom: 15px;
+}
+
+/* =================================== */
+/*         INFOS DU MAÎTRE DU JEU       */
+/* =================================== */
+.game-master-info {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 15px;
+
+  .userPhoto {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  .game-master-pseudo {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #4d3930;
+    text-align: center;
+    margin-top: 5px;
+  }
+}
+
+/* =================================== */
+/*         DESCRIPTION DU JEU          */
+/* =================================== */
+.game-description {
+  margin-top: 20px;
+  gap: 15px;
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4d3930;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #555;
+  }
+}
+
+/* =================================== */
+/*         DÉTAILS DE LA PARTIE        */
+/* =================================== */
+.game-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 20px 0;
+
+  .game-info-item {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: #555;
+    flex: 1 1 45%;
+    margin-bottom: 10px;
+
+    .game-info-item2 {
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+/* =================================== */
+/*         ICÔNES                      */
+/* =================================== */
+.icon {
+  width: 50px;
+  height: auto;
+  cursor: pointer;
+  margin: 20px;
+  transition: transform 0.3s ease;
+}
+
+.icon:hover {
+  transform: scale(1.1);
+}
+
+/* ✅ Restauration de icon2 avec sa taille correcte */
+.icon2 {
+  width: 30px;
+  height: auto;
+}
+
+/* =================================== */
+/*     STYLE SPÉCIFIQUE : PARTICIPANTS */
+/* =================================== */
+.participants-list-box {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 15px;
+  background-color: #fff;
+  color: #333;
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #6b4f4f;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #444;
+    text-align: center;
+  }
+}
+
+/* =================================== */
+/*         LISTE DES PARTICIPANTS      */
+/* =================================== */
+.participants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+
+  .participant {
+    text-align: center;
+
+    .participant-photo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+/* =================================== */
+/*         INFORMATIONS SUPPLÉMENTAIRES */
+/* =================================== */
+.extra-info {
+  margin-top: 20px;
+  font-size: 1rem;
+
+  p {
+    margin: 5px 0;
+    color: #555;
+  }
+}
+
+/* =================================== */
+/*         BOUTONS ACTIONS             */
+/* =================================== */
+.buttonAutresInfos {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+/* =================================== */
+/*  MEDIA QUERIES RESPONSIVE           */
+/* =================================== */
+@media (max-width: 600px) {
+  .modal-content {
+    width: 95%;
+    max-width: 380px;
+    padding: 15px;
+  }
+
+  .game-title {
+    font-size: 1.5rem;
+  }
+
+  .game-details {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .participants-list-box {
+    padding: 10px;
+  }
+
+  .close-btn {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .modal-content {
+    width: 98%;
+    max-width: 350px;
+    padding: 10px;
+    max-height: 85vh; /* Ajuste pour les très petits écrans */
+  }
+
+  .game-title {
+    font-size: 1.3rem;
+  }
+
+  .close-btn {
+    font-size: 18px;
+  }
+
+  .buttonAutresInfos {
+    flex-direction: row;
+    gap: 15px;
+  }
+}

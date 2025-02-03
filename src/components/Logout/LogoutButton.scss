@@ -1,0 +1,45 @@
+.logout-button {
+  /* Retire tout style par défaut du bouton */
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0; /* pour supprimer la marge interne par défaut du bouton */
+  outline: none;
+
+  display: flex; /* si tu veux centrer l'icône ou gérer plusieurs éléments dans ce bouton */
+  align-items: center;
+  justify-content: center;
+
+  /* 
+      Optionnel : si tu veux un petit hover "scale" 
+      pour un effet visuel au survol
+    */
+  transition: transform 0.2s ease, filter 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    background-color: transparent;
+  }
+
+  /* Sélection de l'icône interne */
+  .logout-icon {
+    width: 32px; /* Ajuste la taille à ta convenance */
+    height: 32px;
+    display: block; /* évite d'avoir un espace sous l'image inline */
+
+    /* Au survol du bouton, on change la luminosité de l'image */
+    &:hover {
+      filter: brightness(0.9);
+    }
+  }
+
+  /* 
+      Pour supprimer les outlines sur focus/active (accessibilité visuelle à ajuster si besoin).
+      Si tu veux un effet de focus : remplace par un style .focus { outline: 2px dashed #555; } par ex. 
+    */
+  &:focus,
+  &:active {
+    outline: none;
+    box-shadow: none;
+  }
+}

@@ -1,0 +1,171 @@
+/* ======================================= */
+/*      MODALE FIXE (INDÉPENDANTE)         */
+/* ======================================= */
+.modal-overlayCP {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  /* Empêche l'effet du mode jour/nuit */
+  .dark-mode &,
+  .light-mode & {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* ======================================= */
+/*      CONTENU DE LA MODALE               */
+/* ======================================= */
+.modal-contentCP {
+  background: #ffffff !important; /* Toujours blanc, même en mode nuit */
+  color: #333 !important; /* Texte toujours foncé */
+  padding: 25px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-in-out;
+
+  /* Empêche l'effet du mode jour/nuit */
+  .dark-mode &,
+  .light-mode & {
+    background: #ffffff !important;
+    color: #333 !important;
+  }
+  .modal-title {
+    color: rgb(77 57 48);
+  }
+}
+
+/* Animation d'apparition en fondu */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ======================================= */
+/*      BOUTON DE FERMETURE                */
+/* ======================================= */
+.close-btnCP {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  &:focus {
+    outline: 2px solid #333;
+  }
+}
+
+/* ======================================= */
+/*      FORMULAIRE                         */
+/* ======================================= */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  label {
+    font-weight: bold;
+    /*color: #333 !important;  Toujours foncé */
+  }
+
+  input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    /* color: #333 !important;*/
+    background: #f9f9f9 !important; /* Assurer fond clair */
+
+    &:focus {
+      outline: 2px solid #555;
+      border-color: #555;
+    }
+  }
+
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #007bff;
+    }
+  }
+}
+
+/* ======================================= */
+/*      BOUTON DE SOUMISSION               */
+/* ======================================= */
+.submit-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+
+  &:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    background-color: #004494;
+    transform: translateY(0);
+  }
+
+  &:focus {
+    outline: 2px solid #004494;
+  }
+}
+
+/* ======================================= */
+/*      RESPONSIVE DESIGN                   */
+/* ======================================= */
+@media (max-width: 480px) {
+  .modal-contentCP {
+    padding: 20px;
+    width: 95%;
+    max-width: 350px;
+  }
+
+  .close-btnCP {
+    font-size: 20px;
+  }
+
+  .submit-btn {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}

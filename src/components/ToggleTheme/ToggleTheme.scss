@@ -1,0 +1,132 @@
+/* ================================ */
+/*       COMPOSANT TOGGLE THEME     */
+/* ================================ */
+
+/* Le label global du toggle */
+.toggle-theme {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Masque la checkbox (input) */
+.toggle-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Conteneur du slot du toggle */
+.toggle-slot {
+  position: relative;
+  display: inline-block;
+  width: 5em;
+  height: 2em;
+  border: 3px solid #e4e7ec;
+  border-radius: 3em;
+  background-color: #fff;
+  box-shadow: 0px 3px 10px rgba(228, 231, 236, 0.8);
+  transition: background-color 250ms ease-in-out;
+}
+
+/* Quand la checkbox est décochée (donc mode sombre) */
+.toggle-checkbox:checked ~ .toggle-slot {
+  background-color: #374151;
+}
+
+/* Le bouton (rond) du toggle */
+.toggle-button {
+  position: absolute;
+  top: 0.1em;
+  left: 0.3em;
+  width: 1.4em;
+  height: 1.4em;
+  border-radius: 50%;
+  background-color: #ffeccf;
+  box-shadow: inset 0px 0px 0px 0.2em #ffbb52;
+  transition: background-color 250ms, box-shadow 250ms, transform 250ms;
+  transform: translateX(2.3em);
+}
+
+/* En mode clair (checkbox cochée) => bouton à gauche */
+.toggle-checkbox:checked ~ .toggle-slot .toggle-button {
+  transform: translateX(0);
+  background-color: #485367;
+  box-shadow: inset 0px 0px 0px 0.2em #fff;
+}
+
+/* Icône de soleil */
+.sun-icon-wrapper {
+  position: absolute;
+  width: 1.2em;
+  height: 1.2em;
+  top: 0.2em;
+  left: 0.4em;
+  transform: rotate(15deg);
+  color: #ffbb52;
+  transition: opacity 150ms ease-in-out, transform 250ms ease-in-out;
+}
+
+.sun-icon {
+  width: 100%;
+  height: 100%;
+}
+
+/* Le soleil disparaît en mode clair */
+.toggle-checkbox:checked ~ .toggle-slot .sun-icon-wrapper {
+  opacity: 0;
+  transform: translate(0.2em, 0.2em) rotate(0deg);
+}
+
+/* Icône de lune */
+.moon-icon-wrapper {
+  position: absolute;
+  width: 1.2em;
+  height: 1.2em;
+  top: 0.2em;
+  right: 0.4em;
+  transform: rotate(0deg);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 150ms ease-in-out, transform 250ms ease-in-out;
+}
+
+.moon-icon {
+  width: 100%;
+  height: 100%;
+}
+
+/* La lune apparaît en mode clair (checkbox cochée) */
+.toggle-checkbox:checked ~ .toggle-slot .moon-icon-wrapper {
+  opacity: 1;
+  transform: rotate(-15deg);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 600px) {
+  .toggle-slot {
+    width: 4em;
+    height: 1.8em;
+  }
+
+  .toggle-button {
+    width: 1.3em;
+    height: 1.3em;
+    transform: translateX(2em);
+    top: 0.25em;
+    left: 0.25em;
+  }
+
+  .toggle-checkbox:checked ~ .toggle-slot .toggle-button {
+    transform: translateX(0);
+  }
+
+  .sun-icon-wrapper,
+  .moon-icon-wrapper {
+    width: 1em;
+    height: 1em;
+    top: 0.4em;
+  }
+}

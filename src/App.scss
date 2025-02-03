@@ -1,0 +1,46 @@
+@use "../src/styles/index.scss" as *;
+
+
+/* ========================================= */
+/*  Variables et thèmes (light / dark mode)  */
+/* ========================================= */
+
+/* Mode jour par défaut (via :root) 
+   ou tu peux laisser :root tel qu’il est dans variables.scss 
+*/
+:root {
+  --background-color: var(--color-accent);
+  --text-color: var(--color-darkbrown);
+  /* etc. si besoin */
+}
+
+/* Override pour le mode clair (si tu tiens à distinguer) */
+.light-mode {
+  /* Ton code existant, mais simplifié */
+  --background-color: var(--color-accent);
+  --text-color: var(--color-darkbrown);
+}
+
+/* Override pour le mode nuit */
+.dark-mode {
+  --background-color: var(--color-lighter-black); /* = rgb(20, 20, 20) */
+  --text-color: var(--color-snow);
+}
+
+/* ========================================= */
+/*      Réinitialisation globale            */
+/* ========================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ========================================= */
+/*      Style global du body                */
+/* ========================================= */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--font-primary);
+}

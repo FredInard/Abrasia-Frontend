@@ -1,0 +1,246 @@
+@use "../../styles/index.scss" as *; // Import des variables globales
+
+/* ========================================= */
+/*        CONTENEUR GLOBAL DU PROFIL         */
+/* ========================================= */
+.globalBoxProfil {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--background-color);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  /* Mode sombre spécifique */
+  .dark-mode & {
+    background-color: var(--background-color-dark);
+    color: var(--text-color);
+  }
+}
+
+/* ========================================= */
+/*        EN-TÊTE DU PROFIL                  */
+/* ========================================= */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+
+  .profilPicture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+  }
+
+  .info-header {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    h2 {
+      font-size: 1.6rem;
+      margin: 0;
+      color: var(--text-color);
+    }
+    p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+/* ========================================= */
+/*        FORMULAIRE DU PROFIL               */
+/* ========================================= */
+.formProfil {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+
+  /* Ajustement pour le mobile */
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      font-size: var(--font-size-p);
+      color: var(--text-color);
+    }
+
+    input,
+    textarea {
+      padding: 10px;
+      font-size: var(--font-size-p);
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background-color: var(--input-background);
+      color: var(--text-color);
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: var(--accent-color);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+  }
+}
+
+/* ========================================= */
+/*           PHOTO DE PROFIL                 */
+/* ========================================= */
+.photo-preview {
+  max-width: 100%;
+  max-height: 200px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  object-fit: cover;
+}
+
+/* ========================================= */
+/*        BOUTON DE SOUMISSION               */
+/* ========================================= */
+.btn-update {
+  grid-column: span 2;
+  padding: 12px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  &:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 600px) {
+    grid-column: span 1;
+    width: 100%;
+  }
+}
+
+/* ========================================= */
+/*        BOUTONS SECONDAIRES                */
+/* ========================================= */
+.openChangePasswordButton,
+.btn-unsubscribe {
+  width: 58%;
+  padding: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.openChangePasswordButton {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+
+  &:hover {
+    background-color: rgba(0, 128, 0, 0.658);
+  }
+}
+
+.btn-unsubscribe {
+  background-color: rgb(190, 40, 40);
+  color: white;
+  border: none;
+  margin-top: 10px;
+
+  &:hover {
+    background-color: rgb(150, 30, 30);
+  }
+}
+
+/* ========================================= */
+/*        MESSAGE D'INFORMATION              */
+/* ========================================= */
+.info-message {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* ========================================= */
+/*        RESPONSIVE DESIGN                  */
+/* ========================================= */
+@media (max-width: 768px) {
+  .globalBoxProfil {
+    max-width: 95%;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .btn-update {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profilPicture {
+    width: 70px;
+    height: 70px;
+  }
+
+  .info-header {
+    text-align: center;
+  }
+
+  .formProfil {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-update,
+  .openChangePasswordButton,
+  .btn-unsubscribe {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+}

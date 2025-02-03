@@ -1,0 +1,199 @@
+@use "../../styles/index.scss" as *; // si tu veux bénéficier de tes variables globales
+
+.carpool-tab {
+  padding: 20px;
+
+  h2 {
+    margin-bottom: 20px;
+    /* Exemple : font-family: var(--font-secondary); */
+  }
+
+  button {
+    margin-bottom: 20px;
+  }
+
+  /* ============================= */
+  /*        SECTION FILTRES       */
+  /* ============================= */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espace horizontal/vertical entre les filtres */
+    margin-bottom: 20px;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      min-width: 140px; /* Évite que le champ devienne trop étroit */
+
+      label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: var(--heading-color);
+        /* Option : color: var(--text-color); */
+      }
+
+      input,
+      select {
+        padding: 8px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-family: var(--font-primary);
+        /* color: var(--text-color);
+           background-color: var(--background-color);
+         */
+        transition: border-color 0.2s;
+
+        &:focus {
+          border-color: var(--accent-color);
+          outline: none;
+        }
+      }
+    }
+  }
+
+  /* ============================= */
+  /*        FORMULAIRE CARPOOL    */
+  /* ============================= */
+  .carpool-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+
+    div {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      input[type="checkbox"] {
+        width: auto;
+        margin-right: 5px;
+      }
+    }
+
+    button {
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+  }
+
+  /* ============================= */
+  /*      TABLEAU CARPOOL         */
+  /* ============================= */
+
+  /* Conteneur pour permettre un scroll horizontal sur mobile */
+  .carpool-table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .carpool-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid #ddd; /* #ddd ou var(--border-color) */
+      text-align: left;
+    }
+
+    th {
+      background-color: var(
+        --container-background-color
+      ); /* #f4f4f4 ou var(--container-background-color) */
+      color: var(--heading-color);
+    }
+
+    button {
+      margin-right: 5px;
+    }
+  }
+}
+
+/* ============================= */
+/*         MEDIA QUERIES         */
+/* ============================= */
+@media (max-width: 768px) {
+  .carpool-tab {
+    padding: 10px;
+
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+
+    button {
+      margin-bottom: 15px;
+    }
+
+    .filters {
+      gap: 15px; /* Réduit l'écart sur mobile */
+
+      div {
+        /* Option : tous les filtres sur une ligne chacun 
+           flex: 1 1 100%;
+        */
+      }
+    }
+
+    .carpool-form {
+      max-width: 100%;
+
+      div {
+        margin-bottom: 10px;
+
+        label {
+          /* Option : font-size: 0.9rem; */
+        }
+
+        input,
+        select,
+        textarea {
+          /* font-size: 0.9rem; */
+        }
+      }
+    }
+
+    .carpool-table-container {
+      margin-top: 15px; /* pour séparer le tableau du form, si besoin */
+    }
+
+    .carpool-table {
+      font-size: 0.9rem; /* Ajuste la taille de police si nécessaire */
+    }
+  }
+}
+
+/* Point de rupture additionnel si besoin */
+@media (max-width: 480px) {
+  .carpool-tab {
+    .filters {
+      gap: 10px;
+
+      div {
+        flex: 1 1 100%;
+      }
+    }
+
+    .carpool-table {
+      font-size: 0.85rem;
+    }
+  }
+}

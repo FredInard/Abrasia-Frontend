@@ -1,0 +1,231 @@
+@use "../styles/index.scss" as *; // Import des variables globales
+
+/* ======================================= */
+/*          STYLES DE BASE                */
+/* ======================================= */
+.admin-page {
+  padding: 20px;
+  color: var(--text-color);
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: var(--font-secondary);
+    font-size: var(--font-size-h1);
+    color: var(--heading-color);
+  }
+
+  /* ----- Section des onglets (Utilisateurs, Parties, etc.) ----- */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    button {
+      background-color: rgb(77, 57, 48);
+      padding: 12px 24px;
+      margin: 0 5px;
+      cursor: pointer;
+      border-radius: var(--border-radius);
+      font-size: var(--font-size-p);
+      font-family: var(--font-primary);
+      color: white;
+      font-weight: bold;
+      transition: background-color 0.3s, color 0.3s, transform 0.2s,
+        box-shadow 0.3s;
+
+      &.active {
+        background-color: rgba(77, 57, 48, 0.507);
+        color: white;
+        font-weight: bold;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      &:hover {
+        background-color: rgba(77, 57, 48, 0.507);
+        color: var(--background-color);
+        transform: translateY(-2px);
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(var(--accent-color), 0.5);
+      }
+    }
+  }
+
+  /* ----- Section pour le bouton d'export ----- */
+  .actions {
+    display: flex;
+    justify-content: center;
+
+    .export-button {
+      padding: 12px 24px;
+      background-color: rgba(48, 174, 48, 0.591);
+      color: var(--background-color);
+      font-size: var(--font-size-p);
+      font-family: var(--font-primary);
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+      margin-bottom: 20px;
+
+      &:hover {
+        background-color: green;
+        transform: translateY(-2px);
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: var(--accent-color-darker);
+        box-shadow: 0 0 0 3px rgba(var(--accent-color), 0.5);
+      }
+    }
+  }
+
+  /* ----- Zone de contenu pour chaque onglet actif ----- */
+  .tab-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--container-background-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    color: var(--text-color);
+  }
+}
+
+/* ======================================= */
+/*        MODE SOMBRE SPÉCIFIQUE           */
+/* ======================================= */
+.dark-mode {
+  .admin-page {
+    color: var(--text-color);
+
+    .tabs button {
+      background-color: rgb(77 57 48);
+      border-color: var(--border-color);
+      color: var(--text-color);
+
+      &:hover {
+        background-color: var(--accent-color);
+        color: var(--background-color-dark);
+      }
+
+      &.active {
+        background-color: var(--accent-color);
+        color: var(--background-color-dark);
+        font-weight: bold;
+        box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.2);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(var(--accent-color), 0.5);
+      }
+    }
+
+    .tab-content {
+      background-color: var(--background-color-dark);
+      box-shadow: 0px 6px 10px rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+      border: solid white;
+    }
+
+    .actions .export-button {
+      background-color: rgb(77 57 48);
+      color: var(--text-color);
+      border-color: var(--accent-color);
+
+      &:hover {
+        background-color: var(--accent-color);
+        color: var(--background-color-dark);
+        box-shadow: 0px 6px 8px rgba(255, 255, 255, 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
+        box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+}
+
+/* ======================================= */
+/*          MEDIA QUERIES RESPONSIVE       */
+/* ======================================= */
+@media (max-width: 768px) {
+  .admin-page {
+    padding: 10px;
+
+    h1 {
+      font-size: 1.25rem; /* Ajuste si besoin */
+      margin-bottom: 15px;
+    }
+
+    /* Les onglets se replient en colonne */
+    .tabs {
+      flex-direction: column;
+      align-items: center;
+
+      button {
+        margin: 5px 0;
+        width: 80%; /* ou 100% si tu veux */
+      }
+    }
+
+    /* Le bouton d'export se centre et peut prendre plus de largeur */
+    .actions {
+      flex-direction: column;
+
+      .export-button {
+        width: 80%;
+        margin-bottom: 10px;
+      }
+    }
+
+    /* Le contenu des onglets peut être un peu réduit */
+    .tab-content {
+      padding: 15px;
+      /* on peut aussi réduire la taille de police si nécessaire */
+      font-size: 0.95rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-page {
+    /* Autre ajustement encore plus serré */
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row; /* si tu préfères aligner 2 onglets par ligne */
+    }
+
+    .tabs button {
+      width: 40%;
+      margin: 5px 0;
+      font-size: 0.9rem;
+    }
+
+    .actions .export-button {
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+    .tab-content {
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+  }
+}

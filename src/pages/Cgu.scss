@@ -1,0 +1,62 @@
+/* Fichier : Cgu.scss */
+@use "../styles/index.scss" as *;
+
+/* Conteneur principal */
+.App-header {
+  .NavBarHome {
+    margin-bottom: 20px;
+  }
+
+  .cgu-content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: var(--font-primary); /* Utilisation de la police principale */
+    color: var(--text-color); /* Couleur adaptée au mode clair/sombre */
+
+    h1 {
+      font-size: var(--font-size-h1);
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+      color: var(--heading-color);
+    }
+
+    h2 {
+      font-size: var(--font-size-h2);
+      font-weight: bold;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid var(--border-color); /* Couleur de bordure adaptée */
+      padding-bottom: 5px;
+      color: var(--heading-color);
+    }
+
+    h3 {
+      font-size: var(--font-size-h3);
+      font-weight: bold;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      color: var(--heading-color);
+    }
+
+    p {
+      font-size: var(--font-size-p);
+      line-height: 1.6;
+      margin-bottom: 15px;
+      color: var(--text-color);
+    }
+
+    ul {
+      margin-left: 20px;
+      margin-bottom: 15px;
+      padding-left: 20px;
+
+      li {
+        font-size: var(--font-size-p);
+        line-height: 1.6;
+        margin-bottom: 10px;
+        color: var(--text-color);
+      }
+    }
+  }
+}

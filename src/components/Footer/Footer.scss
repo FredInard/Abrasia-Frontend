@@ -1,0 +1,121 @@
+// Footer.scss
+
+// == Importation des variables globales (si nécessaire) ==
+@use "../../styles/index.scss" as *;
+
+// == Définition des variables SCSS pour les polices ==
+$font-primary: "Poppins", sans-serif;
+$font-secondary: "system-ui", cursive;
+
+// == Couleur d'accentuation ==
+$accent-color: #ffbb52;
+
+// == Styles pour le Footer ==
+.footer {
+  background-color: var(--background-color); // Fond adapté au thème
+  color: var(--text-color); // Texte adapté au thème
+  padding: 2rem 0; // Espacement en haut et en bas
+
+  // Conteneur principal du contenu du footer
+  .footer-content {
+    display: flex;
+    flex-wrap: wrap; // Pour une meilleure réactivité sur mobile
+    justify-content: space-around;
+    align-items: center;
+    max-width: 1200px; // Largeur maximale pour centrer le contenu
+    margin: 0 auto; // Centrer horizontalement le contenu
+    padding: 0 5%; // Espacement latéral
+
+    // Liens de navigation
+    .footer-links {
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+
+        li {
+          margin-right: 1.5rem;
+
+          a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-family: $font-primary;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+
+            &:hover {
+              color: var(--accent-color); // Couleur d'accentuation au survol
+            }
+          }
+        }
+      }
+    }
+
+    // Icônes des réseaux sociaux
+    .footer-social {
+      display: flex;
+      align-items: center;
+
+      a {
+        margin-left: 1rem;
+        color: var(--text-color);
+        font-size: 1.5rem; // Taille des icônes
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: var(--accent-color);
+        }
+
+        // Icônes (assurez-vous d'importer la bibliothèque d'icônes utilisée)
+        i {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  // Section du bas du footer
+  .footer-bottom {
+    text-align: center;
+    margin-top: 2rem;
+
+    p {
+      font-size: 0.9rem;
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: var(--accent-color);
+      }
+    }
+  }
+}
+
+// == Média Queries pour la réactivité ==
+@media (max-width: 768px) {
+  .footer {
+    .footer-content {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .footer-links {
+        ul {
+          flex-direction: column;
+
+          li {
+            margin-right: 0;
+            margin-bottom: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}

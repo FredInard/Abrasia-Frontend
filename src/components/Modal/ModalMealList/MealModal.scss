@@ -1,0 +1,182 @@
+@use "../../../styles/index.scss" as *;
+
+
+/* =================================== */
+/*         MODAL OVERLAY               */
+/* =================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  /* Empêche le mode nuit d'affecter la modale */
+  .dark-mode &,
+  .light-mode & {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* =================================== */
+/*         MODAL CONTENT               */
+/* =================================== */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff !important; /* Toujours blanc */
+  color: #333 !important; /* Toujours foncé */
+  border-radius: 20px;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px; /* Taille adaptée */
+  max-height: 90vh; /* Limite pour éviter le débordement */
+  overflow-y: auto; /* Scroll interne si besoin */
+  position: relative;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-in-out;
+
+  .titleModalh2Meal {
+    font-family: var(--font-secondary);
+    font-size: var(--font-size-h2);
+    line-height: 1.4;
+    color: rgb(77 57 48);
+    margin-bottom: 1rem;
+  }
+
+  /* Empêche le mode nuit d'affecter la modale */
+  .dark-mode &,
+  .light-mode & {
+    background: #ffffff !important;
+    color: #333 !important;
+  }
+}
+
+/* Animation d’apparition */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =================================== */
+/*         BOUTON FERMETURE            */
+/* =================================== */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  &:focus {
+    outline: 2px solid #333;
+  }
+}
+
+/* =================================== */
+/*         TITRE DE LA MODALE          */
+/* =================================== */
+h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4d3930; /* Marron chaud */
+  margin-bottom: 15px;
+}
+
+/* =================================== */
+/*         FORMULAIRE                  */
+/* =================================== */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border 0.3s ease;
+
+    &:focus {
+      border-color: #4d3930; /* Marron chaud */
+      outline: none;
+    }
+  }
+}
+
+/* =================================== */
+/*         BOUTON DE VALIDATION        */
+/* =================================== */
+button[type="submit"] {
+  padding: 12px;
+  background-color: #4d3930; /* Marron chaud */
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+
+  &:hover {
+    background-color: #6b4f4f;
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  &:focus {
+    outline: none;
+    border: 2px solid #6b4f4f;
+  }
+}
+
+/* =================================== */
+/*      RESPONSIVE DESIGN               */
+/* =================================== */
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95%;
+    max-width: 350px;
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  button[type="submit"] {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+}

@@ -1,0 +1,220 @@
+@use "../../../styles/index.scss" as *;
+
+/* ========================================= */
+/*           MODAL OVERLAY (FOND)            */
+/* ========================================= */
+.edit-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: auto; /* Permet le scroll si le contenu est trop grand */
+  padding: 20px; /* Ajoute du padding pour éviter que la modale touche les bords */
+}
+
+/* ========================================= */
+/*           CONTENU DE LA MODALE            */
+/* ========================================= */
+.edit-modal-content {
+  background-color: var(--color-accent); /* Toujours fond clair */
+  color: var(--color-darkbrown); /* Toujours texte foncé */
+  padding: 20px;
+  border-radius: 12px;
+  width: 95%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-in-out;
+  overflow-y: auto;
+  max-height: 90vh; /* S'assure que la modale ne dépasse pas l'écran */
+  display: flex;
+  flex-direction: column;
+
+  /* Empêche la modale d'être affectée par le mode sombre */
+  .dark-mode & {
+    background-color: var(--color-accent);
+    color: var(--color-darkbrown);
+    border: 1px solid var(--border-color);
+  }
+}
+
+/* Animation d’apparition */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================= */
+/*           BOUTON DE FERMETURE             */
+/* ========================================= */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--color-darkbrown);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+/* ========================================= */
+/*           FORMULAIRE D'ÉDITION            */
+/* ========================================= */
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex-grow: 1; /* Permet au formulaire d'occuper tout l'espace disponible */
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-weight: bold;
+      font-size: var(--font-size-p);
+      color: var(--color-darkbrown3);
+    }
+
+    input,
+    textarea {
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: var(--font-size-p);
+      color: var(--color-darkbrown);
+      background-color: rgba(129, 129, 129, 0.15);
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: var(--accent-color);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+  }
+}
+
+/* ========================================= */
+/*           PRÉVISUALISATION PHOTO          */
+/* ========================================= */
+.photo-preview {
+  max-width: 100%;
+  max-height: 200px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  object-fit: cover;
+}
+
+/* ========================================= */
+/*           CASE À COCHER (Toggle)          */
+/* ========================================= */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+}
+
+/* ========================================= */
+/*           BOUTON DE SOUMISSION            */
+/* ========================================= */
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: rgb(77, 57, 48);
+  color: white;
+  font-size: var(--font-size-p);
+  font-weight: bold;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+  border: none;
+  margin-top: auto; /* Pousse le bouton en bas */
+
+  &:hover {
+    background-color: rgba(77, 57, 48, 0.8);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* ========================================= */
+/*           RESPONSIVE DESIGN               */
+/* ========================================= */
+@media (max-width: 768px) {
+  .edit-modal-content {
+    width: 98%;
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .submit-btn {
+    font-size: 1rem;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .edit-modal-overlay {
+    padding: 10px;
+  }
+
+  .edit-modal-content {
+    width: 100%;
+    max-width: 380px;
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .close-btn {
+    font-size: 20px;
+    top: 8px;
+    right: 8px;
+  }
+
+  .submit-btn {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+}

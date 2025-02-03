@@ -1,0 +1,463 @@
+@use "../styles/index.scss" as *;
+@use "sass:color";
+
+
+
+/* ===================================== */
+/*               PAGE HOME               */
+/* ===================================== */
+.home {
+  /* Ajuste les marges verticales globales si besoin */
+  /* padding-top: 5%; */
+  padding-bottom: 5%;
+}
+
+/* ===================================== */
+/*          SECTION INTRO (vidéo)        */
+/* ===================================== */
+.section-intro {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Remplit l’écran sur desktop */
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  top: -86px;
+
+  .video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    .video-background {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Remplit tout le conteneur */
+      object-position: center; /* Centrer la vidéo si rognée */
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.8) 0%,
+        rgba(0, 0, 0, 0.4) 50%,
+        rgba(0, 0, 0, 0) 100%
+      );
+      z-index: 1;
+      color: #fff;
+
+      h1 {
+        text-align: center;
+        // font-size: 2.5rem;
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+        color: white;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 90%;
+        margin: 0 auto;
+
+        img {
+          max-width: 700px;
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
+  }
+}
+
+/* ===================================== */
+/*    BOUTONS GLOBAUX (hérités)          */
+/* ===================================== */
+button {
+  background-color: var(--color-brown);
+  color: var(--color-accent);
+  padding: 0.8rem 1.2rem;
+  border: var(--color-brown);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-p);
+  transition: background-color 0.3s ease, transform 0.2s;
+
+  &:hover {
+    // background-color: var(--color-darkbrown);
+    transform: translateY(-3px);
+  }
+}
+
+/* ===================================== */
+/*     SECTION PRÉSENTATION / INTRO      */
+/* ===================================== */
+.section-presentation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  padding: 3rem 15%; /* Ajuste la marge interne si besoin */
+
+  .intro-text {
+    flex: 1 1 60%; /* On peut régler le ratio texte / CTA */
+    h2 {
+      font-family: var(--font-secondary);
+      font-size: var(--font-size-h2);
+      line-height: 1.4;
+      color: var(--heading-color);
+      margin-bottom: 1rem;
+    }
+  }
+
+  .cta {
+    flex: 1 1 40%;
+    display: flex;
+    justify-content: center;
+
+    button {
+      /* Hérite déjà du style global */
+    }
+  }
+}
+
+/* ===================================== */
+/*      SECTION NOTRE ASSOCIATION        */
+/* ===================================== */
+.section-our-association {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: center;
+  flex-direction: row-reverse;
+  padding: 3rem 15%;
+  margin-bottom: 3rem;
+  justify-content: center;
+
+  .divImageSectionAsso {
+    flex: 1 1 40%;
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--border-radius);
+    }
+  }
+
+  .section-what-is-jdr1 {
+    flex: 1 1 50%;
+    h2 {
+      font-size: var(--font-size-h2);
+      font-family: var(--font-secondary);
+      color: var(--heading-color);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    p {
+      font-size: var(--font-size-p);
+      line-height: 1.6;
+      color: var(--text-color);
+    }
+  }
+}
+
+/* ===================================== */
+/*          SECTION AGENDA               */
+/* ===================================== */
+.section-agenda {
+  padding: 3rem 5%;
+  background-color: var(--container-background-color);
+  border-radius: var(--border-radius);
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2 {
+    font-size: var(--font-size-h2);
+    font-family: var(--font-secondary);
+    color: var(--heading-color);
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: var(--font-size-p);
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+  }
+}
+
+/* ===================================== */
+/*      SECTION ÉQUIPE (TEAM)            */
+/* ===================================== */
+.section-team {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 0 15%;
+
+  h2 {
+    font-size: var(--font-size-h2);
+    font-family: var(--font-secondary);
+    color: var(--heading-color);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  p {
+    font-size: var(--font-size-p);
+    color: var(--text-color);
+    margin-bottom: 2rem;
+  }
+}
+
+/* ===================================== */
+/*      SECTION HELLOASSO (SOUTIEN)      */
+/* ===================================== */
+.section-HelloAsso {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 0 15%;
+
+  h2 {
+    font-size: var(--font-size-h2);
+    font-family: var(--font-secondary);
+    color: var(--heading-color);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .boxHelloAsso {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-direction: column;
+
+    .helloAsso1 {
+      flex: 1 1 40%;
+      img {
+        width: 100%;
+        height: auto;
+        max-width: 300px;
+        margin-bottom: 1rem;
+        border-radius: var(--border-radius);
+      }
+      p {
+        font-size: var(--font-size-p);
+        line-height: 1.6;
+        color: var(--text-color);
+      }
+    }
+
+    .helloAsso2 {
+      flex: 1 1 40%;
+      display: flex;
+      justify-content: center;
+
+      img {
+        width: 80px;
+        height: auto;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+/* ===================================== */
+/*      SECTION NOUS CONTACTER           */
+/* ===================================== */
+.section-contact {
+  padding: 3rem 15%;
+  margin-bottom: 3rem;
+
+  h2 {
+    font-size: var(--font-size-h2);
+    font-family: var(--font-secondary);
+    color: var(--heading-color);
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: var(--font-size-p);
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+  }
+}
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+
+  .contact-section {
+    flex: 1 1 25%;
+    min-width: 200px; /* Pour éviter que la section ne devienne trop étroite */
+    text-align: left;
+
+    h3 {
+      font-family: var(--font-secondary);
+      font-size: var(--font-size-h3);
+      margin-bottom: 0.5rem;
+      color: var(--heading-color);
+    }
+
+    p {
+      font-size: var(--font-size-p);
+      margin-bottom: 0.5rem;
+      color: var(--text-color);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      li {
+        margin-bottom: 0.5rem;
+        a {
+          color: var(--text-color);
+          text-decoration: none;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+} /* Taille et base commune */
+.contact-icon {
+  display: inline-block;
+  width: 30px; /* Ajuste la taille si tu veux plus grand/petit */
+  height: 30px;
+  background-size: contain; /* L’image s’adapte */
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0 0.5rem; /* Espace horizontal si besoin */
+}
+
+/* Icone Discord (jour) */
+.contact-icon-discord {
+  background-image: url("../assets/pics/IconDiscorde.svg");
+}
+
+/* Icone Facebook (jour) */
+.contact-icon-facebook {
+  background-image: url("../assets/pics/IconFacebook.svg");
+}
+
+/* Icone Mail (jour) */
+.contact-icon-mail {
+  background-image: url("../assets/pics/IconMail.png");
+}
+
+/* Icone HelloAsso (jour) */
+.contact-icon-helloasso {
+  background-image: url("../assets/pics/iconsConfiance.png");
+}
+
+/* ===================================== */
+/*    ICONES : MODE JOUR + MODE NUIT     */
+/* ===================================== */
+/* 
+   On utilise .contact-icon + .contact-icon-xxx 
+   => .dark-mode écrase le background-image 
+*/
+
+/* Base pour les icônes (jour) */
+.contact-icon {
+  display: inline-block;
+  width: 90px;
+  height: 90px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Jour (couleurs par défaut) */
+.contact-icon-discord {
+  background-image: url("../assets/pics/discord.svg");
+}
+.contact-icon-facebook {
+  background-image: url("../assets/pics/facebook.svg");
+}
+.contact-icon-mail {
+  background-image: url("../assets/pics/mail.svg");
+}
+.contact-icon-helloasso {
+  background-image: url("../assets/pics/iconConfianceB.png");
+}
+
+/* Nuit (versions blanches) */
+.dark-mode {
+  .contact-icon-discord {
+    background-image: url("../assets/pics/IconDiscordeW.svg");
+  }
+  .contact-icon-facebook {
+    background-image: url("../assets/pics/IconFacebookW.svg");
+  }
+  .contact-icon-mail {
+    background-image: url("../assets/pics/IconMailW.png");
+  }
+  .contact-icon-helloasso {
+    background-image: url("../assets/pics/iconsConfianceW.png");
+  }
+}
+.social-icons {
+  display: flex;
+  justify-content: center;
+}
+/* ================ */
+/*  MEDIA QUERIES   */
+/* ================ */
+
+/* 1) Écran ≤ 768px (tablette) */
+@media (max-width: 768px) {
+  .section-intro {
+    /* Option : Désactive le 100vh sur mobile :
+       height: auto; 
+    */
+    .overlay {
+      h1 {
+        font-size: 1.8rem;
+        max-width: 90%;
+        margin: 0 auto;
+
+        img {
+          max-width: 80%;
+        }
+      }
+    }
+  }
+}
+
+/* 2) Écran ≤ 480px (smartphone) */
+@media (max-width: 480px) {
+  .section-intro {
+    /* Si besoin de scroller verticalement :
+       height: auto;
+    */
+    .overlay {
+      h1 {
+        font-size: 1.5rem;
+
+        img {
+          max-width: 70%;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,179 @@
+@use "../../styles/index.scss" as *; // si tu utilises un fichier de variables globales
+
+.nourriture-tab {
+  padding: 20px;
+
+  h2 {
+    margin-bottom: 20px;
+    /* Option : font-family: var(--font-secondary); */
+  }
+
+  button {
+    margin-bottom: 20px;
+  }
+
+  /* ============================= */
+  /*       SECTION FILTRES        */
+  /* ============================= */
+  .filters {
+    display: flex;
+    flex-wrap: wrap; /* Permet de passer à la ligne sur les écrans étroits */
+    gap: 20px; /* Espace entre les champs de filtre */
+    margin-bottom: 20px;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      min-width: 140px; /* Évite que le champ devienne trop étroit */
+
+      label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: var(--heading-color);
+      }
+
+      input,
+      select {
+        padding: 8px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        /* color: var(--text-color);
+           background-color: var(--background-color); */
+        transition: border-color 0.2s;
+
+        &:focus {
+          border-color: var(--accent-color);
+          outline: none;
+        }
+      }
+    }
+  }
+
+  /* ============================= */
+  /*      FORMULAIRE NOURRITURE   */
+  /* ============================= */
+  .nourriture-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+
+    div {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+    }
+
+    button {
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+  }
+
+  /* ============================= */
+  /*     TABLEAU NOURRITURE       */
+  /* ============================= */
+
+  /* Conteneur optionnel pour un scroll horizontal (mobile) */
+  .nourriture-table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .nourriture-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid #ddd; /* ou var(--border-color) */
+      text-align: left;
+    }
+
+    th {
+      background-color: var(
+        --container-background-color
+      ); /* ou var(--container-background-color) */
+    }
+
+    button {
+      margin-right: 5px;
+    }
+  }
+}
+
+/* ============================= */
+/*         MEDIA QUERIES         */
+/* ============================= */
+@media (max-width: 768px) {
+  .nourriture-tab {
+    padding: 10px;
+
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+
+    button {
+      margin-bottom: 15px;
+    }
+
+    .filters {
+      gap: 15px;
+
+      div {
+        /* Option : un bloc par ligne 
+           flex: 1 1 100%;
+        */
+      }
+    }
+
+    .nourriture-form {
+      max-width: 100%;
+
+      div {
+        margin-bottom: 10px;
+      }
+    }
+
+    .nourriture-table-container {
+      margin-top: 15px; /* Sépare le tableau du formulaire */
+    }
+
+    .nourriture-table {
+      font-size: 0.9rem; /* Ajuste la taille du texte si souhaité */
+    }
+  }
+}
+
+/* Autre break-point si tu veux affiner davantage */
+@media (max-width: 480px) {
+  .nourriture-tab {
+    .filters {
+      gap: 10px;
+
+      div {
+        flex: 1 1 100%;
+      }
+    }
+    .nourriture-table {
+      font-size: 0.85rem;
+    }
+  }
+}

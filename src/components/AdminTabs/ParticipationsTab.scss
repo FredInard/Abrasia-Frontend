@@ -1,0 +1,209 @@
+@use "../../styles/index.scss" as *; // si vous utilisez un fichier de variables globales
+
+.participations-tab {
+  padding: 20px;
+
+  h2 {
+    margin-bottom: 20px;
+    /* Option : font-family: var(--font-secondary); */
+  }
+
+  /* Boutons généraux (ex: "Créer/Modifier") */
+  button {
+    margin-bottom: 20px;
+  }
+
+  /* ============================= */
+  /*           SECTION FILTRES     */
+  /* ============================= */
+  .filters {
+    margin-bottom: 20px;
+    flex-direction: column;
+    h3 {
+      margin-bottom: 10px;
+      /* Option : font-size: 1.1rem; font-weight: bold; */
+    }
+
+    .filters-form {
+      display: flex;
+      flex-wrap: wrap;
+      // flex-direction: column;
+      gap: 20px;
+
+      div {
+        display: flex;
+        flex-direction: column;
+        min-width: 140px; /* Évite que le champ devienne trop étroit */
+
+        label {
+          margin-bottom: 5px;
+          font-weight: bold;
+          color: var(--heading-color);
+          /* Optionnel : color: var(--text-color); */
+        }
+
+        input,
+        select {
+          padding: 8px;
+          border: 1px solid var(--border-color);
+          border-radius: var(--border-radius);
+          /* Option : color: var(--text-color); background-color: var(--background-color); */
+          transition: border-color 0.2s;
+
+          &:focus {
+            border-color: var(--accent-color);
+            outline: none;
+          }
+        }
+      }
+
+      /* Si tu souhaites un bouton "Réinitialiser" plus tard */
+      /* button {
+        margin-top: auto;
+      } */
+    }
+  }
+
+  /* ============================= */
+  /*     FORMULAIRE PARTICIPATION  */
+  /* ============================= */
+  .participation-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+
+    div {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        /* border, background, etc. selon tes préférences ou variables */
+      }
+    }
+
+    button {
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+  }
+
+  /* ============================= */
+  /*         TABLEAU              */
+  /* ============================= */
+
+  /* Conteneur pour le tableau (scroll horizontal sur mobile si besoin) */
+  .participations-table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .participations-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid #ddd; /* ou var(--border-color) */
+      text-align: left;
+    }
+
+    th {
+      background-color: var(
+        --container-background-color
+      ); /* ou var(--container-background-color) */
+    }
+
+    button {
+      margin-right: 5px;
+    }
+  }
+}
+
+/* =============================== */
+/*        MEDIA QUERIES            */
+/* =============================== */
+@media (max-width: 768px) {
+  .participations-tab {
+    padding: 10px;
+
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+
+    button {
+      margin-bottom: 15px;
+      /* font-size: 0.95rem; */
+    }
+
+    .filters {
+      .filters-form {
+        gap: 15px;
+
+        div {
+          /* Option : passer chaque filtre en largeur 100% */
+          /* flex: 1 1 100%; */
+        }
+      }
+    }
+
+    .participation-form {
+      max-width: 100%;
+
+      div {
+        margin-bottom: 10px;
+
+        label {
+          /* font-size: 0.9rem; */
+        }
+
+        input,
+        select {
+          /* font-size: 0.9rem; */
+        }
+      }
+    }
+
+    /* Le tableau */
+    .participations-table-container {
+      margin-top: 15px; /* si tu veux espacer le tableau du reste */
+    }
+
+    .participations-table {
+      font-size: 0.9rem; /* Réduction de la taille de police */
+    }
+  }
+}
+
+/* Autre break-point possible */
+@media (max-width: 480px) {
+  .participations-tab {
+    .filters .filters-form {
+      flex-direction: column;
+      gap: 10px;
+
+      div {
+        flex: 1 1 100%;
+      }
+    }
+
+    .participation-form {
+      div {
+        /* encore plus serré si besoin */
+      }
+    }
+
+    .participations-table {
+      font-size: 0.85rem;
+    }
+  }
+}

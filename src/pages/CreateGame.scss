@@ -1,0 +1,232 @@
+@use "../styles/index.scss" as *;
+
+// == Variables supplémentaires ==
+$input-border-color: var(--border-color);
+$input-border-radius: 8px;
+$input-padding: 10px;
+$input-font-size: var(--font-size-p);
+
+$btn-background-color: var(--accent-color);
+$btn-hover-background-color: var(--accent-color-darker);
+$btn-text-color: var(--text-color);
+$btn-border-radius: var(--border-radius);
+$btn-padding: 12px;
+$btn-font-size: var(--font-size-p);
+$btn-font-weight: bold;
+
+$container-background-color: var(--container-background-color);
+$container-padding: 20px;
+$container-border-radius: var(--border-radius);
+$container-box-shadow: var(--box-shadow);
+
+// == Conteneur principal ==
+.creer-partie-container {
+  margin: 100px auto 20px;
+  max-width: 600px;
+  padding: $container-padding;
+  background-color: $container-background-color;
+  border-radius: $container-border-radius;
+  box-shadow: $container-box-shadow;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+
+  // Mode sombre
+  .dark-mode & {
+    background-color: var(--background-color-dark);
+    border: 1px solid var(--text-color);
+    box-shadow: var(--box-shadow);
+  }
+}
+
+// == Titre ==
+.creer-partie-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-h2);
+}
+
+// == Groupes de formulaire ==
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  label {
+    font-weight: bold;
+    color: var(--heading-color);
+    font-size: var(--font-size-p);
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    background-color: rgba(129, 129, 129, 0.15);
+    padding: $input-padding;
+    font-size: $input-font-size;
+    font-family: var(--font-primary);
+    border: 1px solid $input-border-color;
+    border-radius: $input-border-radius;
+    color: var(--text-color);
+    transition: border-color 0.3s ease;
+
+    // Mode sombre
+    .dark-mode & {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent-color);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  select {
+    cursor: pointer;
+  }
+}
+
+// == Bouton soumission ==
+.btn-submit {
+  width: 100%;
+  padding: $btn-padding;
+  background-color: $btn-background-color;
+  color: $btn-text-color;
+  font-size: $btn-font-size;
+  font-weight: $btn-font-weight;
+  border-radius: $btn-border-radius;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+  background-color: rgb(77 57 48);
+  color: white;
+  border: none;
+
+  &:hover {
+    background-color: rgba(77, 57, 48, 0.8);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* == Toggle Switch == */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.toggle-input {
+  display: none;
+}
+
+.toggle-label {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(136, 136, 136, 0.6);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toggle-label .toggle-inner {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: white;
+  text-transform: uppercase;
+  user-select: none;
+  transition: color 0.3s;
+}
+
+.toggle-label .toggle-switch-handle {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.toggle-input:checked + .toggle-label {
+  background-color: rgba(77, 57, 48, 0.8);
+
+  .dark-mode & {
+    background-color: rgba(77, 57, 48, 0.9);
+  }
+}
+
+.toggle-input:checked + .toggle-label .toggle-inner {
+  left: 65%;
+  color: white;
+}
+
+.toggle-input:checked + .toggle-label .toggle-switch-handle {
+  transform: translateX(26px);
+}
+
+/* == RESPONSIVE == */
+@media (max-width: 768px) {
+  .creer-partie-container {
+    max-width: 90%;
+    margin-top: 50px;
+    padding: 15px;
+    margin-bottom: 110px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .btn-submit {
+    font-size: 1rem;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .creer-partie-container {
+    max-width: 95%;
+    padding: 18px;
+    margin-bottom: 110px;
+  }
+
+  .btn-submit {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  .toggle-switch {
+    width: 40px;
+    height: 20px;
+  }
+
+  .toggle-label .toggle-switch-handle {
+    width: 18px;
+    height: 18px;
+  }
+
+  .toggle-input:checked + .toggle-label .toggle-switch-handle {
+    transform: translateX(18px);
+  }
+}

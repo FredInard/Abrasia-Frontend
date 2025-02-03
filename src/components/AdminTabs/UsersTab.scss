@@ -1,0 +1,239 @@
+@use "../../styles/index.scss" as *;// Assurez-vous que les variables globales sont disponibles
+
+/* 
+  Styles pour le composant UsersTab 
+*/
+.users-tab {
+  padding: 20px;
+
+  h2 {
+    margin-bottom: 20px;
+    font-family: var(--font-secondary);
+    font-size: var(--font-size-h2);
+    color: var(--heading-color);
+  }
+
+  /*
+    Barre de filtres 
+  */
+  .filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Permet de passer à la ligne sur petits écrans */
+
+    div {
+      display: flex;
+      flex-direction: column;
+      min-width: 140px; /* Évite que le champ devienne trop étroit */
+
+      label {
+        font-weight: bold;
+        color: var(--heading-color);
+        margin-bottom: 5px;
+      }
+
+      input,
+      select {
+        padding: 8px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-family: var(--font-primary);
+        color: var(--text-color);
+        background-color: var(--background-color);
+        transition: border-color 0.2s;
+
+        &:focus {
+          border-color: var(--accent-color);
+          outline: none;
+        }
+      }
+    }
+  }
+
+  /*
+    Formulaire (user-form) -> si tu veux l'améliorer encore, 
+    tu peux l’ajouter ici aussi
+  */
+  .user-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin-bottom: 20px; /* Séparer du tableau si besoin */
+
+    div {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+      }
+    }
+
+    button {
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+  }
+
+  /* 
+    Conteneur pour le tableau 
+    => permet un scroll horizontal sur mobile 
+  */
+  .users-table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Ajuste la largeur minimale si tu veux forcer un scroll horizontal */
+
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background-color: var(--container-background-color);
+      color: var(--text-color);
+    }
+
+    /* 
+      Actions d'édition / suppression 
+    */
+    .actions {
+      display: flex;
+      gap: 10px;
+
+      .action-icon {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+
+        &:hover {
+          transform: scale(1.1);
+          opacity: 0.8;
+        }
+
+        &.edit-icon {
+          filter: hue-rotate(50deg); /* Ajustez pour un effet visuel */
+        }
+
+        &.delete-icon {
+          filter: hue-rotate(0deg);
+        }
+      }
+    }
+  }
+}
+
+/* 
+  -----------------------------
+  STYLES POUR REACT-TOASTIFY 
+  -----------------------------
+*/
+.Toastify__toast-container {
+  z-index: 9999;
+}
+
+.Toastify__toast {
+  border-radius: var(--border-radius);
+  font-family: var(--font-primary);
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--box-shadow);
+
+  .Toastify__close-button > svg {
+    fill: var(--text-color);
+  }
+}
+
+.Toastify__toast--success {
+  background-color: #4caf50; /* Vert */
+}
+
+.Toastify__toast--error {
+  background-color: #f44336; /* Rouge */
+}
+
+.Toastify__toast--warning {
+  background-color: #ff9800; /* Orange */
+}
+
+.Toastify__toast--info {
+  background-color: #2196f3; /* Bleu */
+}
+
+/* ========================= */
+/*  Media Queries Responsive */
+/* ========================= */
+
+/* Option A : garder le tableau en scroll horizontal */
+@media (max-width: 768px) {
+  .users-tab {
+    .users-table {
+      font-size: 0.9rem; /* on réduit un peu la taille du texte sur mobile/tablette */
+    }
+  }
+}
+
+/* Option B : Convertir en "cartes" si tu le souhaites 
+   sous un seuil plus bas, par ex. 600px 
+*/
+@media (max-width: 600px) {
+  .users-tab {
+    .users-table {
+      border-collapse: separate; /* Nécessaire pour l'affichage en bloc */
+      width: 100%;
+      min-width: auto; /* Retire la min-width pour laisser place aux cartes */
+
+      thead {
+        display: none; /* On masque l'en-tête */
+      }
+
+      tbody {
+        tr {
+          display: block;
+          border-bottom: 1px solid var(--border-color);
+          margin-bottom: 1rem;
+        }
+
+        td {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.5rem;
+          border: none;
+          /* On peut ajouter un pseudo-élément pour afficher le nom de la colonne 
+             Cf. le data-label dans <td data-label="Nom de la colonne"> 
+          */
+          &::before {
+            content: attr(data-label);
+            font-weight: bold;
+            margin-right: 0.5rem;
+          }
+
+          &:not(:last-child) {
+            border-bottom: 1px dashed var(--border-color);
+          }
+        }
+      }
+    }
+  }
+}

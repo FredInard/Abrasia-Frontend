@@ -1,0 +1,139 @@
+@use "../styles/index.scss" as *; // Import des variables globales
+
+
+.login-signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.form-container {
+  background-color: var(--container-background-color);
+  padding: 2.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  width: 400px;
+  border: solid;
+
+  h2 {
+    text-align: center;
+    font-family: var(--font-secondary);
+    font-size: var(--font-size-h2);
+    color: var(--heading-color);
+    margin-bottom: 1.25rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      font-size: var(--font-size-p);
+      color: var(--text-color);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.625rem;
+      font-size: var(--font-size-p);
+      font-family: var(--font-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      background-color: rgb(177 177 177);
+      color: var(--text-color);
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        // background-color: var(--container-background-color);
+        background-color: rgb(177 177 177);
+      }
+    }
+  }
+
+  .btn-submit {
+    @include button-style; // Utilisation du mixin global pour les boutons
+    width: 100%;
+    margin-top: 1rem;
+    background-color: rgb(77 57 48);
+    color: white;
+    border: 1px solid var(--border-color);
+
+    &:hover {
+      background-color: green;
+      color: white;
+    }
+  }
+
+  .toggle-text {
+    text-align: center;
+    margin-top: 1.25rem;
+    font-size: var(--font-size-small);
+
+    span {
+      color: var(--accent-color);
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: underline;
+
+      &:hover {
+        color: var(--accent-color-darker);
+      }
+    }
+  }
+}
+
+/* Mode sombre spécifique */
+.dark-mode {
+  .form-container {
+    background-color: var(--background-color-dark);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--border-color);
+    border: solid white;
+  }
+
+  // h2 {
+  //   color: var(--accent-color);
+  // }
+
+  label {
+    color: var(--h2-color);
+  }
+
+  input {
+    background-color: var(--container-background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+
+    &:focus {
+      border-color: var(--accent-color);
+      background-color: var(--background-color-dark);
+    }
+  }
+
+  .btn-submit {
+    background-color: rgb(77 57 48);
+    color: white;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+
+    &:hover {
+      background-color: green;
+      color: var(--text-color);
+    }
+  }
+
+  .toggle-text span {
+    color: var(--accent-color);
+
+    &:hover {
+      color: var(--accent-color-darker);
+    }
+  }
+}

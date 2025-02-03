@@ -1,0 +1,234 @@
+@use "../../styles/index.scss" as *; // Si tu veux profiter de tes variables globales
+
+.parties-tab {
+  padding: 20px;
+
+  h2 {
+    margin-bottom: 20px;
+    /* Exemple : ajouter une police ou couleur en variables
+       font-family: var(--font-secondary);
+       color: var(--heading-color);
+    */
+  }
+
+  /* Boutons globaux (ex: "Créer une partie") */
+  button {
+    margin-bottom: 20px;
+  }
+
+  /* ------------------------------------------------ */
+  /*              Section des filtres                */
+  /* ------------------------------------------------ */
+  .filters {
+    display: flex;
+    flex-wrap: wrap; /* Permet de passer à la ligne sur petits écrans */
+    gap: 20px; /* Espace horizontal/vertical entre les filtres */
+    margin-bottom: 20px;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      min-width: 140px; /* Évite que le champ devienne trop étroit */
+
+      label {
+        margin-bottom: 5px;
+        font-weight: bold;
+
+        color: var(--heading-color);
+        font-size: 0.95rem;
+      }
+
+      input,
+      select {
+        padding: 8px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-family: var(--font-primary);
+        /* color: var(--text-color);
+           background-color: var(--background-color);
+        */
+        transition: border-color 0.2s;
+
+        &:focus {
+          border-color: var(--accent-color);
+          outline: none;
+        }
+      }
+    }
+  }
+
+  /* ------------------------------------------------ */
+  /*        Formulaire pour créer/modifier partie    */
+  /* ------------------------------------------------ */
+  .party-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px; /* Largeur max fixe */
+
+    div {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        /* Option : 
+           border: 1px solid var(--border-color);
+           background-color: var(--background-color);
+           color: var(--text-color);
+        */
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+    }
+
+    /* Boutons du formulaire */
+    button {
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+
+    /* Exemple de style pour la preview de la photo */
+    .photo-preview {
+      margin-top: 10px;
+      img {
+        max-width: 200px;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  /* ------------------------------------------------ */
+  /*          Conteneur + styles du tableau           */
+  /* ------------------------------------------------ */
+  .parties-table-container {
+    width: 100%;
+    overflow-x: auto; /* Permet un scroll horizontal sur mobile */
+  }
+
+  .parties-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid #ddd; /* Remplace ou utilise une variable si souhaité */
+      text-align: left;
+    }
+
+    th {
+      background-color: var(
+        --container-background-color
+      ); /* ou var(--container-background-color); */
+    }
+
+    /* Boutons dans les lignes du tableau */
+    button {
+      margin-right: 5px;
+    }
+
+    /* Exemple de style pour la photo du tableau */
+    img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+    }
+  }
+}
+
+/* ========================= */
+/*  Media Queries Responsive */
+/* ========================= */
+@media (max-width: 768px) {
+  .parties-tab {
+    padding: 10px;
+
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+
+    button {
+      /* Ajuste la marge ou la taille si besoin */
+      margin-bottom: 15px;
+      /* font-size: 0.95rem; */
+    }
+
+    .filters {
+      gap: 15px;
+      margin-bottom: 15px;
+
+      div {
+        /* Option 1 : Un filtre par ligne
+           flex: 1 1 100%;
+        */
+
+        /* Option 2 : Deux filtres par ligne (si l'espace est suffisant)
+           flex: 1 1 45%;
+        */
+      }
+    }
+
+    .party-form {
+      max-width: 100%; /* Pour occuper toute la largeur disponible sur mobile */
+
+      div {
+        margin-bottom: 10px;
+
+        label {
+          /* Option : réduire la police sur mobile
+             font-size: 0.9rem; 
+          */
+        }
+
+        input,
+        select,
+        textarea {
+          /* font-size: 0.9rem; */
+        }
+      }
+    }
+
+    /* Table: on conserve overflow-x: auto; 
+       le scroll horizontal se fera dans .parties-table-container 
+    */
+    .parties-table-container {
+      margin-top: 15px;
+    }
+
+    .parties-table {
+      font-size: 0.9rem; /* on réduit un peu la taille du texte */
+    }
+  }
+}
+
+/* Exemple : un second break-point pour encore plus petit */
+@media (max-width: 480px) {
+  .parties-tab {
+    .filters {
+      gap: 10px;
+      div {
+        flex: 1 1 100%;
+      }
+    }
+    .party-form {
+      div {
+        /* ici, si besoin, on peut encore réduire la taille */
+      }
+    }
+    .parties-table {
+      font-size: 0.85rem;
+    }
+  }
+}
