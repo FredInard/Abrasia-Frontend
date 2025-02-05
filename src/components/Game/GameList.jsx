@@ -1,130 +1,131 @@
-import React, { useState, useEffect } from "react"
-import axios from "axios"
-import "./GameList.scss"
-import GameDetails from "../GameDetails/GameDetails"
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./GameList.scss";
+import GameDetails from "../GameDetails/GameDetails";
 
 const GameList = ({ selectedDate }) => {
-  const [games, setGames] = useState([])
-  const [filteredGames, setFilteredGames] = useState([])
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [selectedGameId, setSelectedGameId] = useState(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  console.info("games", games)
+  const [games, setGames] = useState([]); // Stocke toutes les parties
+  const [filteredGames, setFilteredGames] = useState([]); // Parties filtrées par date
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedGameId, setSelectedGameId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  console.info("📅 Date sélectionnée :", selectedDate);
+
+  /** 🔹 Récupère les parties depuis l'API */
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const token = localStorage.getItem("authToken")
-        console.info("GameList authToken:", token)
-        const headers = { Authorization: `Bearer ${token}` }
+        const token = localStorage.getItem("authToken");
+        console.info("🛂 Auth Token:", token);
 
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/parties/affichage`,
           { headers }
-        )
+        );
 
-        console.info("Games fetched:", response.data)
-        setGames(response.data)
+        console.info("🎲 Parties reçues :", response.data);
+
+        if (Array.isArray(response.data)) {
+          setGames(response.data);
+        } else {
+          console.warn("⚠️ L'API n'a pas retourné un tableau :", response.data);
+          setGames([]);
+        }
       } catch (err) {
-        console.error("Erreur lors du chargement des parties :", err)
-        setError(
-          "Impossible de charger les parties. Veuillez vérifier la connexion réseau."
-        )
+        console.error("❌ Erreur lors du chargement des parties :", err);
+        setError("Impossible de charger les parties. Vérifiez la connexion.");
       } finally {
-        setLoading(false)
-        console.info("Loading set to false")
+        setLoading(false);
       }
-    }
+    };
 
-    fetchGames()
-  }, [])
+    fetchGames();
+  }, []);
 
+  /** 🔹 Filtrage des parties selon la date sélectionnée */
   useEffect(() => {
-    console.info("Selected date:", selectedDate)
-    console.info("Games before filtering:", games)
+    console.info("🔎 Filtrage des parties pour la date :", selectedDate);
 
-    if (selectedDate) {
-      const formattedSelectedDate = selectedDate
-
+    if (selectedDate && Array.isArray(games)) {
+      const formattedDate = selectedDate;
       const filtered = games.filter((game) => {
-        const gameDate = new Date(game.date).toISOString().split("T")[0]
-        return gameDate === formattedSelectedDate
-      })
+        if (!game.date) return false; // Évite les erreurs si `date` est undefined
+        const gameDate = new Date(game.date).toISOString().split("T")[0];
+        return gameDate === formattedDate;
+      });
 
-      console.info("Filtered games:", filtered)
-      setFilteredGames(filtered)
+      console.info("🎯 Parties filtrées :", filtered);
+      setFilteredGames(filtered);
     } else {
-      setFilteredGames([])
+      setFilteredGames([]);
     }
-  }, [selectedDate, games])
+  }, [selectedDate, games]);
 
+  /** 🔹 Ouvre la fenêtre des détails */
   const handleGameClick = (gameId) => {
-    console.info("Game clicked with ID:", gameId)
-    setSelectedGameId(gameId)
-    setIsModalOpen(true)
-  }
+    console.info("📌 Partie sélectionnée :", gameId);
+    setSelectedGameId(gameId);
+    setIsModalOpen(true);
+  };
 
+  /** 🔹 Ferme la fenêtre des détails */
   const closeModal = () => {
-    console.info("Closing modal")
-    setIsModalOpen(false)
-    setSelectedGameId(null)
-  }
+    console.info("❌ Fermeture du modal");
+    setIsModalOpen(false);
+    setSelectedGameId(null);
+  };
 
-  if (loading) {
-    return <p>Chargement des parties...</p>
-  }
-  if (error) {
-    return <p>{error}</p>
-  }
-  function formatDate(dateString) {
-    // dateString = "2025-01-17"
-    const [yyyy, mm, dd] = dateString.split("-")
-    // dd = "17", mm = "01", yyyy = "2025"
-    return `${dd}-${mm}-${yyyy}` // ex. "17-01-2025"
-  }
+  /** 🔹 Formatte la date en `dd-mm-yyyy` */
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const [yyyy, mm, dd] = dateString.split("-");
+    return `${dd}-${mm}-${yyyy}`;
+  };
+
+  /** 🔹 Format l'URL de l'image pour éviter les erreurs */
+  const formatImageUrl = (photoPath) => {
+    if (!photoPath) return "default.jpg"; // Image par défaut si pas d'image
+    return `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, "")}/${photoPath.replace(/\\/g, "/")}`;
+  };
+
+  /** 🔹 Gestion du chargement et des erreurs */
+  if (loading) return <p>⏳ Chargement des parties...</p>;
+  if (error) return <p>❌ {error}</p>;
+
   return (
     <>
       <div className="calendarDate">
         {selectedDate ? formatDate(selectedDate) : ""}
       </div>
+
       <div className="gameBox">
         {selectedDate ? (
           filteredGames.length > 0 ? (
-            filteredGames.map((game) => {
-              return (
-                <div
-                  key={game.id}
-                  className="game-item"
-                  onClick={() => handleGameClick(game.id)}
-                >
-                  <h3>{game.titre}</h3>
-                  <img
-                    src={`${import.meta.env.VITE_BACKEND_URL.replace(
-                      /\/$/,
-                      ""
-                    )}/${game.photo_scenario.replace(/\\/g, "/")}`}
-                    alt="illustration de la partie"
-                    className="illustrationPartie"
-                  />
-
-                  <p>
-                    <strong>Lieu :</strong> {game.nb_max_joueurs}
-                  </p>
-                </div>
-              )
-            })
+            filteredGames.map((game) => (
+              <div key={game.id} className="game-item" onClick={() => handleGameClick(game.id)}>
+                <h3>{game.titre}</h3>
+                <img
+                  src={formatImageUrl(game.photo_scenario)}
+                  alt={`Illustration de la partie ${game.titre}`}
+                  className="illustrationPartie"
+                />
+                <p><strong>Lieu :</strong> {game.nb_max_joueurs}</p>
+              </div>
+            ))
           ) : (
-            <p>Aucune partie trouvée pour la date sélectionnée.</p>
+            <p>⚠️ Aucune partie trouvée pour la date sélectionnée.</p>
           )
         ) : (
-          <p>Veuillez sélectionner une date pour afficher les parties.</p>
+          <p>🗓️ Veuillez sélectionner une date pour afficher les parties.</p>
         )}
-        {isModalOpen && (
-          <GameDetails partyId={selectedGameId} onClose={closeModal} />
-        )}
+
+        {isModalOpen && <GameDetails partyId={selectedGameId} onClose={closeModal} />}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default GameList
+export default GameList;
