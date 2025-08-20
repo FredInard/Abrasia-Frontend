@@ -3,6 +3,7 @@ import axios from "axios"
 import { jwtDecode } from "jwt-decode"; // Import pour décoder le token
 import GameDetails from "../GameDetails/GameDetails" // Import de GameDetails
 import "./PlayerGames.scss"
+import { buildPublicUrl } from "../../utils/url.js"
 
 const PlayerGames = () => {
   const [games, setGames] = useState([])
@@ -167,10 +168,7 @@ const PlayerGames = () => {
                 >
                   <h3>{game.titre}</h3>
                   <img
-                    src={`${import.meta.env.VITE_BACKEND_URL.replace(
-                      /\/$/,
-                      ""
-                    )}/${game.photo_scenario.replace(/\\/g, "/")}`}
+                    src={buildPublicUrl(game.photo_scenario)}
                     alt="illustration de la partie"
                     className="illustrationPartie"
                   />

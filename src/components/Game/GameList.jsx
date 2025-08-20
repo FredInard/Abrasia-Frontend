@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./GameList.scss";
 import GameDetails from "../GameDetails/GameDetails";
+import { buildPublicUrl } from "../../utils/url.js";
 
 const GameList = ({ selectedDate }) => {
   const [games, setGames] = useState([]); // Stocke toutes les parties
@@ -85,11 +86,7 @@ const GameList = ({ selectedDate }) => {
     return `${dd}-${mm}-${yyyy}`;
   };
 
-  /** 🔹 Format l'URL de l'image pour éviter les erreurs */
-  const formatImageUrl = (photoPath) => {
-    if (!photoPath) return "default.jpg"; // Image par défaut si pas d'image
-    return `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, "")}/${photoPath.replace(/\\/g, "/")}`;
-  };
+  // Utilitaire partagé pour formater l'URL d'image
 
   /** 🔹 Gestion du chargement et des erreurs */
   if (loading) return <p>⏳ Chargement des parties...</p>;
@@ -108,7 +105,7 @@ const GameList = ({ selectedDate }) => {
               <div key={game.id} className="game-item" onClick={() => handleGameClick(game.id)}>
                 <h3>{game.titre}</h3>
                 <img
-                  src={formatImageUrl(game.photo_scenario)}
+                  src={buildPublicUrl(game.photo_scenario)}
                   alt={`Illustration de la partie ${game.titre}`}
                   className="illustrationPartie"
                 />

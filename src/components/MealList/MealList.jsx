@@ -57,26 +57,35 @@ const MealList = ({ partyId, isUpdated, userId }) => {
     <div className="MealListBox">
       {/* <h4>Repas</h4> */}
       {meals.length > 0 ? (
-        meals.map((meal) => (
-          <div key={meal.id} className="MealListInfo">
-            <img
-              className="iconPizza"
-              src={iconPizza}
-              alt="icone d'une part de pizza"
-            />
-            <div>
-              {meal.pseudo} Apporte {meal.contenu}
+        meals.map((meal) => {
+          const displayPseudo =
+            meal.pseudo ||
+            meal?.utilisateur?.pseudo ||
+            meal?.user?.pseudo ||
+            meal?.utilisateur_pseudo ||
+            "Un joueur"
+
+          return (
+            <div key={meal.id} className="MealListInfo">
+              <img
+                className="iconPizza"
+                src={iconPizza}
+                alt="icone d'une part de pizza"
+              />
+              <div>
+                {displayPseudo} Apporte {meal.contenu}
+              </div>
+              {userId === meal.utilisateur_id && (
+                <span
+                  className="delete-cross"
+                  onClick={() => handleDeleteMeal(meal.id)}
+                >
+                  ✕
+                </span>
+              )}
             </div>
-            {userId === meal.utilisateur_id && (
-              <span
-                className="delete-cross"
-                onClick={() => handleDeleteMeal(meal.id)}
-              >
-                ✕
-              </span>
-            )}
-          </div>
-        ))
+          )
+        })
       ) : (
         <p></p>
       )}

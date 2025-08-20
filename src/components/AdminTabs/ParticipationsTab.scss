@@ -120,6 +120,9 @@
       background-color: var(
         --container-background-color
       ); /* ou var(--container-background-color) */
+      color: var(--text-color, #111); /* Force une couleur de texte visible */
+      font-weight: 600; /* Rendez l'en-tête plus lisible */
+      white-space: nowrap; /* Évite la coupure du texte des en-têtes */
     }
 
     button {

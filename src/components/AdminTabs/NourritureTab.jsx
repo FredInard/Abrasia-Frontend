@@ -22,6 +22,22 @@ const NourritureTab = () => {
 
   const authToken = localStorage.getItem("authToken")
 
+  // Helpers: normalize display fields across possible API shapes
+  const getDisplayPseudo = (r) =>
+    r?.utilisateur_pseudo ||
+    r?.utilisateur?.pseudo ||
+    r?.user?.pseudo ||
+    r?.utilisateurPseudo ||
+    "Inconnu"
+
+  const getDisplayTitre = (r) =>
+    r?.partie_titre ||
+    r?.partie?.titre ||
+    r?.party?.titre ||
+    r?.partieTitre ||
+    r?.titre ||
+    "Titre indisponible"
+
   useEffect(() => {
     fetchNourritures()
   }, [])
@@ -53,7 +69,7 @@ const NourritureTab = () => {
       filtered = filtered.filter(
         (repas) =>
           repas.partie_id.toString().includes(filterPartieId.trim()) ||
-          repas.partie_titre
+          (getDisplayTitre(repas) || "")
             .toLowerCase()
             .includes(filterPartieId.toLowerCase())
       )
@@ -65,7 +81,7 @@ const NourritureTab = () => {
           repas.utilisateur_id
             .toString()
             .includes(filterUtilisateurId.trim()) ||
-          repas.utilisateur_pseudo
+          (getDisplayPseudo(repas) || "")
             .toLowerCase()
             .includes(filterUtilisateurId.toLowerCase())
       )
@@ -252,17 +268,15 @@ const NourritureTab = () => {
                 <th>Actions</th>
               </tr>
             </thead>
-
             <tbody>
               {filteredNourritures.map((nourriture) => (
                 <tr key={nourriture.id}>
                   <td>{nourriture.id}</td>
                   <td>
-                    {nourriture.partie_titre} (ID: {nourriture.partie_id})
+                    {getDisplayTitre(nourriture)} (ID: {nourriture.partie_id})
                   </td>
                   <td>
-                    {nourriture.utilisateur_pseudo} (ID:{" "}
-                    {nourriture.utilisateur_id})
+                    {getDisplayPseudo(nourriture)} (ID: {nourriture.utilisateur_id})
                   </td>
                   <td>{nourriture.contenu}</td>
                   <td>

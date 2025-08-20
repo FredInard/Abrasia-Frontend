@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import { AuthContext } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 import "./LoginSignup.scss";
@@ -69,7 +69,12 @@ const LoginSignup = () => {
     }
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/login`, loginForm);
+      // Adapter le champs attendu par le backend: `motDePasse` au lieu de `password`
+      const loginPayload = {
+        email: (loginForm.email || "").trim().toLowerCase(),
+        motDePasse: loginForm.password,
+      };
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/login`, loginPayload);
 
       if (response.status === 200 && response.data.token) {
         const token = response.data.token;
@@ -110,19 +115,39 @@ const LoginSignup = () => {
     }
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs`, {
-        ...signupForm,
+      // N'envoyer au backend que les champs attendus (exclure confirmPassword)
+      const { pseudo, nom, prenom, email, password } = signupForm;
+      // Adapter le champs attendu par le backend: `motDePasse` (utilisé par le middleware hashPassword)
+      const payload = {
+        pseudo,
+        nom,
+        prenom,
+        email: (email || "").trim().toLowerCase(),
+        motDePasse: password,
         cgu_accepted: true,
         cookies_accepted: true,
-      });
+      };
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs`,
+        payload
+      );
 
       if (response.status === 201) {
         toast.success("Inscription réussie !");
         setIsLogin(true);
       }
     } catch (error) {
-      console.error("❌ Erreur lors de l'inscription :", error);
-      toast.error(error.response?.status === 409 ? "L'email ou le pseudo est déjà utilisé." : "Erreur lors de l'inscription.");
+      // Afficher le message retourné par le backend si disponible pour faciliter le debug
+      const backendMessage = error.response?.data?.message || error.response?.data?.error;
+      console.error("❌ Erreur lors de l'inscription :", backendMessage || error);
+      if (error.response?.status === 409) {
+        toast.error("L'email ou le pseudo est déjà utilisé.");
+      } else if (backendMessage) {
+        toast.error(`Erreur: ${backendMessage}`);
+      } else {
+        toast.error("Erreur lors de l'inscription.");
+      }
     }
   };
 
@@ -145,16 +170,31 @@ const LoginSignup = () => {
                 </div>
                 <button type="submit" className="btn-submit">Connexion</button>
                 <p className="toggle-text">Mot de passe oublié ? <span onClick={togglePasswordReset}>Réinitialiser ici</span></p>
-                <p className="toggle-text">Vous n'avez pas de compte ? <span onClick={toggleForm}>Inscrivez-vous ici</span></p>
+                <p className="toggle-text">Vous n&apos;avez pas de compte ? <span onClick={toggleForm}>Inscrivez-vous ici</span></p>
               </form>
             ) : (
               <form onSubmit={handleSignupSubmit}>
                 <h2>Inscription</h2>
-                <p>En créant un compte, vous acceptez les CGU et l’utilisation de cookies nécessaires au bon fonctionnement du site.</p>
+                <p>En créant un compte, vous acceptez les CGU et l&rsquo;utilisation de cookies nécessaires au bon fonctionnement du site.</p>
                 {["nom", "prenom", "pseudo", "email", "password", "confirmPassword"].map((field) => (
                   <div className="form-group" key={field}>
-                    <label htmlFor={`signup${field}`}>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
-                    <input type={field.includes("password") ? "password" : "text"} id={`signup${field}`} name={field} value={signupForm[field]} onChange={(e) => handleInputChange(e, setSignupForm)} required />
+                    <label htmlFor={`signup${field}`}>
+                      {field.charAt(0).toUpperCase() + field.slice(1)}
+                    </label>
+                    <input
+                      type={
+                        field.toLowerCase().includes("password")
+                          ? "password"
+                          : field === "email"
+                          ? "email"
+                          : "text"
+                      }
+                      id={`signup${field}`}
+                      name={field}
+                      value={signupForm[field]}
+                      onChange={(e) => handleInputChange(e, setSignupForm)}
+                      required
+                    />
                   </div>
                 ))}
                 <button type="submit" className="btn-submit">Inscription</button>

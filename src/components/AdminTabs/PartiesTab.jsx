@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import "./PartiesTab.scss"
+import { buildPublicUrl } from "../../utils/url.js"
 
 const PartiesTab = () => {
   const [parties, setParties] = useState([])
@@ -150,10 +151,7 @@ const PartiesTab = () => {
     })
     setPhotoPreview(
       party.photo_scenario
-        ? `${import.meta.env.VITE_BACKEND_URL}/${party.photo_scenario.replace(
-            /\\/g,
-            "/"
-          )}`
+        ? buildPublicUrl(party.photo_scenario)
         : null
     )
     setExistingPhoto(party.photo_scenario || null)
@@ -482,9 +480,7 @@ const PartiesTab = () => {
                 <div>
                   <p>Photo actuelle :</p>
                   <img
-                    src={`${
-                      import.meta.env.VITE_BACKEND_URL
-                    }/${existingPhoto.replace(/\\/g, "/")}`}
+                    src={buildPublicUrl(existingPhoto)}
                     alt="Photo actuelle"
                     style={{ maxWidth: "200px", marginTop: "10px" }}
                   />
@@ -526,9 +522,7 @@ const PartiesTab = () => {
                   <td>
                     {party.photo_scenario ? (
                       <img
-                        src={`${
-                          import.meta.env.VITE_BACKEND_URL
-                        }/${party.photo_scenario.replace(/\\/g, "/")}`}
+                        src={buildPublicUrl(party.photo_scenario)}
                         alt={party.titre}
                         style={{
                           width: "50px",

@@ -15,6 +15,7 @@ import iconPlace from "../../assets/pics/iconPlaceMarker.svg"
 import iconTeam from "../../assets/pics/iconTeam.svg"
 import IconCar from "../../assets/pics/iconCar.svg"
 import iconPizza from "../../assets/pics/iconPizza.svg"
+import { buildPublicUrl } from "../../utils/url.js"
 
 const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
   const [gameDetails, setGameDetails] = useState(null)
@@ -60,6 +61,9 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
           `${import.meta.env.VITE_BACKEND_URL}/parties/${partyId}`
         )
         setGameDetails(res.data)
+        const data = res.data || {}
+        console.info("GameDetails data keys:", Object.keys(data))
+        console.info("GameDetails sample:", data)
 
         // Vérifier si l'utilisateur est déjà inscrit à la partie
         if (user) {
@@ -177,6 +181,24 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
       return
     }
 
+    // Normaliser la date en ISO-8601 (Prisma DateTime)
+    const toISODateTime = (value) => {
+      if (!value) return null
+      // Si pas de secondes, on ajoute ":00"
+      const withSeconds =
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value) ? `${value}:00` : value
+      // new Date(...).toISOString() produit un format ISO valide
+      const d = new Date(withSeconds)
+      if (isNaN(d.getTime())) return null
+      return d.toISOString()
+    }
+
+    const isoDeparture = toISODateTime(carpoolData.departureTime)
+    if (!isoDeparture) {
+      setError("Format de date de départ invalide. Veuillez sélectionner une date/heure valide.")
+      return
+    }
+
     axios
       .post(
         `${import.meta.env.VITE_BACKEND_URL}/covoiturages`,
@@ -185,7 +207,7 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
           partie_id: partyId,
           ville_depart: carpoolData.departure,
           ville_arrivee: carpoolData.arrival,
-          heure_depart: carpoolData.departureTime,
+          heure_depart: isoDeparture,
           propose_retour: carpoolData.returnOffer,
         },
         {
@@ -378,18 +400,16 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
         </h1>
         <div className="GmEtDescription">
           <div className="game-master-info">
-            {gameDetails.maitre_du_jeu_photo && (
+            {gameDetails?.utilisateur?.photo_profil && (
               <img
-                src={`${import.meta.env.VITE_BACKEND_URL}/${
-                  gameDetails.maitre_du_jeu_photo
-                }`}
-                alt={`Maître du jeu ${gameDetails.maitre_du_jeu_pseudo}`}
+                src={buildPublicUrl(gameDetails.utilisateur.photo_profil)}
+                alt={`Maître du jeu ${gameDetails?.utilisateur?.pseudo || "Inconnu"}`}
                 className="userPhoto"
                 onClick={() => handleUserClick(gameDetails.id_maitre_du_jeu)}
               />
             )}
             <span className="game-master-pseudo">
-              MJ: {gameDetails.maitre_du_jeu_pseudo}
+              MJ: {gameDetails?.utilisateur?.pseudo || "Inconnu"}
             </span>
           </div>
 
@@ -425,7 +445,16 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
           </div>
           <div className="game-info-item">
             <img src={iconTeam} alt="Icône des joueurs" className="icon2" /> : x{" "}
-            {gameDetails.nb_max_joueurs || "Non précisé"}
+            {gameDetails.nb_max_joueurs
+              ? `${gameDetails.nb_max_joueurs}${
+                  gameDetails.strict_nb_joueurs === true ||
+                  gameDetails.strict_nb_joueurs === 1 ||
+                  gameDetails.strict_nb_joueurs === "1" ||
+                  gameDetails.strict_nb_joueurs === "true"
+                    ? " max"
+                    : ""
+                }`
+              : "Non précisé"}
           </div>
         </div>
 

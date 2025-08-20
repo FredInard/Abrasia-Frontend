@@ -48,33 +48,42 @@ const CarpoolList = ({ partyId, userId, isUpdated }) => {
     <div>
       {/* <h4>Covoiturages</h4> */}
       {Array.isArray(carpools) && carpools.length > 0 ? (
-        carpools.map((carpool) => (
-          <div key={carpool.id}>
-            <p>
-              <div className="carpoolListBox">
-                <img
-                  className="iconCar"
-                  src={IconCar}
-                  alt="icone d'une petite voiture rouge"
-                />
-                {carpool.pseudo} propose un covoiturage de{" "}
-                {carpool.ville_depart} à {carpool.ville_arrivee} - départ{" "}
-                {new Date(carpool.heure_depart).toLocaleTimeString("fr-FR", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-                {carpool.utilisateur_id === userId && (
-                  <button
-                    onClick={() => handleDeleteCarpool(carpool.id)}
-                    className="delete-btn"
-                  >
-                    ✕
-                  </button>
-                )}
-              </div>
-            </p>
-          </div>
-        ))
+        carpools.map((carpool) => {
+          const displayPseudo =
+            carpool.pseudo ||
+            carpool?.utilisateur?.pseudo ||
+            carpool?.user?.pseudo ||
+            carpool?.utilisateur_pseudo ||
+            "Un joueur"
+
+          return (
+            <div key={carpool.id}>
+              <p>
+                <div className="carpoolListBox">
+                  <img
+                    className="iconCar"
+                    src={IconCar}
+                    alt="icone d'une petite voiture rouge"
+                  />
+                  {displayPseudo} propose un covoiturage de{" "}
+                  {carpool.ville_depart} à {carpool.ville_arrivee} - départ{" "}
+                  {new Date(carpool.heure_depart).toLocaleTimeString("fr-FR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                  {carpool.utilisateur_id === userId && (
+                    <button
+                      onClick={() => handleDeleteCarpool(carpool.id)}
+                      className="delete-btn"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              </p>
+            </div>
+          )
+        })
       ) : (
         <p></p>
       )}

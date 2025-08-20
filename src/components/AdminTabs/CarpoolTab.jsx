@@ -29,6 +29,22 @@ const CarpoolTab = () => {
 
   const authToken = localStorage.getItem("authToken")
 
+  // Helpers: normalize display fields across possible API shapes
+  const getDisplayPseudo = (c) =>
+    c?.utilisateur_pseudo ||
+    c?.utilisateur?.pseudo ||
+    c?.user?.pseudo ||
+    c?.utilisateurPseudo ||
+    "Inconnu"
+
+  const getDisplayTitre = (c) =>
+    c?.partie_titre ||
+    c?.partie?.titre ||
+    c?.party?.titre ||
+    c?.partieTitre ||
+    c?.titre ||
+    "Titre indisponible"
+
   useEffect(() => {
     fetchCarpools()
   }, [])
@@ -69,7 +85,7 @@ const CarpoolTab = () => {
     // Filtrer par pseudo utilisateur
     if (filterUtilisateurId.trim() !== "") {
       filtered = filtered.filter((carpool) =>
-        carpool.utilisateur_pseudo
+        (getDisplayPseudo(carpool) || "")
           .toLowerCase()
           .includes(filterUtilisateurId.trim().toLowerCase())
       )
@@ -78,7 +94,7 @@ const CarpoolTab = () => {
     // Filtrer par titre de partie
     if (filterPartieId.trim() !== "") {
       filtered = filtered.filter((carpool) =>
-        carpool.partie_titre
+        (getDisplayTitre(carpool) || "")
           .toLowerCase()
           .includes(filterPartieId.trim().toLowerCase())
       )
@@ -393,8 +409,8 @@ const CarpoolTab = () => {
             {filteredCarpools.map((carpool) => (
               <tr key={carpool.covoiturage_id}>
                 <td>{carpool.covoiturage_id}</td>
-                <td>{carpool.utilisateur_pseudo || "Inconnu"}</td>
-                <td>{carpool.partie_titre || "Titre indisponible"}</td>
+                <td>{getDisplayPseudo(carpool)}</td>
+                <td>{getDisplayTitre(carpool)}</td>
                 <td>{carpool.ville_depart}</td>
                 <td>{carpool.ville_arrivee}</td>
                 <td>

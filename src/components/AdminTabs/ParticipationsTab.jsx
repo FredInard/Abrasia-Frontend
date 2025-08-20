@@ -26,6 +26,22 @@ const ParticipationsTab = () => {
 
   const authToken = localStorage.getItem("authToken")
 
+  // Helpers: normalize display fields from various possible API shapes
+  const getDisplayPseudo = (p) =>
+    p?.utilisateur_pseudo ||
+    p?.utilisateur?.pseudo ||
+    p?.user?.pseudo ||
+    p?.utilisateurPseudo ||
+    "Un joueur"
+
+  const getDisplayTitre = (p) =>
+    p?.partie_titre ||
+    p?.partie?.titre ||
+    p?.party?.titre ||
+    p?.partieTitre ||
+    p?.titre ||
+    "Sans titre"
+
   useEffect(() => {
     console.info("Composant ParticipationsTab monté. Fetch des participations.")
     fetchParticipations()
@@ -62,7 +78,7 @@ const ParticipationsTab = () => {
 
     if (filterUtilisateurId.trim() !== "") {
       filtered = filtered.filter((participation) =>
-        participation.utilisateur_pseudo
+        (getDisplayPseudo(participation) || "")
           .toLowerCase()
           .includes(filterUtilisateurId.toLowerCase())
       )
@@ -74,7 +90,7 @@ const ParticipationsTab = () => {
 
     if (filterPartieId.trim() !== "") {
       filtered = filtered.filter((participation) =>
-        participation.partie_titre
+        (getDisplayTitre(participation) || "")
           .toLowerCase()
           .includes(filterPartieId.toLowerCase())
       )
@@ -332,9 +348,9 @@ const ParticipationsTab = () => {
                 filteredParticipations.map((participation) => (
                   <tr key={participation.id}>
                     <td>{participation.id}</td>
-                    <td>{participation.utilisateur_pseudo}</td>{" "}
+                    <td>{getDisplayPseudo(participation)}</td>
                     {/* Affiche le pseudo */}
-                    <td>{participation.partie_titre}</td>{" "}
+                    <td>{getDisplayTitre(participation)}</td>
                     {/* Affiche le titre */}
                     <td>
                       {new Date(

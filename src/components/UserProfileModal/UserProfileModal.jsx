@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import axios from "axios"
+import { buildPublicUrl } from "../../utils/url.js"
 import "./UserProfileModal.scss"
 
 export default function UserProfileModal({ user, onClose }) {
@@ -11,8 +12,13 @@ export default function UserProfileModal({ user, onClose }) {
     // Fonction pour récupérer les données utilisateur depuis l'API
     const fetchUserData = async () => {
       try {
+        const userId = typeof user === "object" && user !== null ? user.id : user
+        const token = localStorage.getItem("authToken")
+        const headers = token ? { Authorization: `Bearer ${token}` } : {}
+
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${user}`
+          `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${userId}`,
+          { headers }
         )
         setUserData(response.data) // Mettre à jour avec les données récupérées
         setError(null) // Réinitialise l'erreur en cas de succès
@@ -51,20 +57,25 @@ export default function UserProfileModal({ user, onClose }) {
 
   // Rendu principal une fois les données chargées
   return (
-    <div className="userProfileModal">
-      <div className="modalContent">
+    <div
+      className="userProfileModal"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="modalContent" onClick={(e) => e.stopPropagation()}>
         <button onClick={onClose} className="closeButton">
           X
         </button>
         {userData && (
           <>
-            <img
-              src={`${
-                import.meta.env.VITE_BACKEND_URL
-              }/${userData.photo_profil.replace(/\\/g, "/")}`}
-              alt={userData.pseudo}
-              className="profilePhoto"
-            />
+            {userData.photo_profil && (
+              <img
+                src={buildPublicUrl(userData.photo_profil)}
+                alt={userData.pseudo}
+                className="profilePhoto"
+              />
+            )}
             <h2>{userData.prenom}</h2>
             <p>Pseudo: {userData.pseudo}</p>
             <p>Bio: {userData.bio || "Aucune bio disponible."}</p>

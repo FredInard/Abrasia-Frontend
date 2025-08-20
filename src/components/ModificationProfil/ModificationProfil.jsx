@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { jwtDecode } from "jwt-decode";
 import ChangePassword from "./ChangePassword.jsx"
+import { buildPublicUrl } from "../../utils/url.js"
 import "./ModificationProfil.scss"
 import LogoutButton from "../../components/Logout/LogoutButton.jsx"
 
@@ -55,6 +56,8 @@ export default function ModificationProfil() {
     Authorization: `Bearer ${token}`,
   }
 
+  // Helper importé: buildPublicUrl
+
   // Charger les données utilisateur depuis le backend
   useEffect(() => {
     if (idUser) {
@@ -82,9 +85,7 @@ export default function ModificationProfil() {
           console.info("setFormData :", formData)
 
           if (res.data.photo_profil) {
-            setImageUrl(
-              `${import.meta.env.VITE_BACKEND_URL}/${res.data.photo_profil}`
-            )
+            setImageUrl(buildPublicUrl(res.data.photo_profil))
           }
         })
         .catch((err) => {
@@ -101,9 +102,7 @@ export default function ModificationProfil() {
   // Mettre à jour l'image quand l'utilisateur change
   useEffect(() => {
     if (utilisateur.photo_profil) {
-      setImageUrl(
-        `${import.meta.env.VITE_BACKEND_URL}/${utilisateur.photo_profil}`
-      )
+      setImageUrl(buildPublicUrl(utilisateur.photo_profil))
     }
   }, [utilisateur.photo_profil])
 
@@ -142,9 +141,7 @@ export default function ModificationProfil() {
           console.info("setFormData :", formData)
 
           if (res.data.photo_profil) {
-            setExistingPhotoUrl(
-              `${import.meta.env.VITE_BACKEND_URL}/${res.data.photo_profil}`
-            )
+            setExistingPhotoUrl(buildPublicUrl(res.data.photo_profil))
           }
         })
         .catch((err) => {
@@ -177,6 +174,11 @@ export default function ModificationProfil() {
     // Créer une copie de formData pour manipulation
     const formDataCopy = { ...formData }
 
+    // Normaliser l'email: trim + lowercase si présent
+    if (typeof formDataCopy.email === "string") {
+      formDataCopy.email = formDataCopy.email.trim().toLowerCase()
+    }
+
     // Formater la date au format 'YYYY-MM-DD' si nécessaire
     if (formDataCopy.date_naissance) {
       const dateObj = new Date(formDataCopy.date_naissance)
@@ -205,7 +207,6 @@ export default function ModificationProfil() {
         formDataToSend,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -432,8 +433,10 @@ export default function ModificationProfil() {
         Se désinscrire
       </button>
       <p>
-        Seul ton prénom, ton pseudo, ta bio et ta photo de profils sont rendu
-        accésible (uniquement) aux personnes ayant un compte. Le reste des
+        * Obligatoire
+        <br />
+        info : Seul ton prénom, ton pseudo, ta bio et ta photo de profils sont
+        rendu accésible uniquement aux personnes ayant un compte. Le reste des
         informations sont réservés aux administrateurs pour des raisons
         logistique ou pratiques.
       </p>

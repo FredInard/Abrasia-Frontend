@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import UserProfileModal from "../UserProfileModal/UserProfileModal" // Import de la modale de profil
+import { buildPublicUrl } from "../../utils/url.js"
 import "./ParticipantsList.scss"
 
 const ParticipantsList = ({
@@ -13,6 +14,8 @@ const ParticipantsList = ({
   const [selectedParticipant, setSelectedParticipant] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
+
+  // Helper importé: buildPublicUrl
 
   console.info("selectedParticipant de ParticipantsList", selectedParticipant)
 
@@ -36,7 +39,8 @@ const ParticipantsList = ({
 
   // Fonction pour ouvrir la modale avec le participant sélectionné
   const handleProfileClick = (participant) => {
-    setSelectedParticipant(participant.id)
+    // Use the user's id, not the participation id, for the profile modal
+    setSelectedParticipant(participant.utilisateur_id || participant.id)
   }
 
   // Fonction pour fermer la modale
@@ -45,14 +49,14 @@ const ParticipantsList = ({
   }
 
   // Fonction pour supprimer un participant
-  const handleRemoveParticipant = async (participantId) => {
+  const handleRemoveParticipant = async (userId) => {
     if (!isCreator) return // Seul le MJ peut supprimer un participant
 
     try {
       await axios.delete(
         `${
           import.meta.env.VITE_BACKEND_URL
-        }/participations/${partyId}/${participantId}`,
+        }/participations/${partyId}/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -62,7 +66,7 @@ const ParticipantsList = ({
 
       // Mettre à jour la liste des participants localement
       setParticipants((prevParticipants) =>
-        prevParticipants.filter((p) => p.id !== participantId)
+        prevParticipants.filter((p) => (p.utilisateur_id || p.id) !== userId)
       )
 
       // Optionnel : Notifier l'utilisateur
@@ -74,7 +78,7 @@ const ParticipantsList = ({
       }
     } catch (err) {
       console.error(
-        `Erreur lors de la suppression du participant ${participantId} :`,
+        `Erreur lors de la suppression du participant utilisateur ${userId} :`,
         err
       )
       setError("Impossible de supprimer ce participant. Veuillez réessayer.")
@@ -88,30 +92,50 @@ const ParticipantsList = ({
     <div>
       <div className="participantsListBox">
         {participants.length > 0 ? (
-          participants.map((participant) => (
-            <div className="participantsAffichage" key={participant.id}>
-              <img
-                src={`${
-                  import.meta.env.VITE_BACKEND_URL
-                }/${participant.photo_profil.replace(/\\/g, "/")}`}
-                alt="Photo de profil participant"
-                className="ProfilPhoto"
-                onClick={() => handleProfileClick(participant)} // Gestionnaire de clic
-              />
-              {participant.pseudo}
-              {isCreator && (
-                <button
-                  className="remove-participant-btn"
-                  onClick={() => handleRemoveParticipant(participant.id)}
-                  aria-label={`Supprimer ${participant.pseudo}`}
-                >
-                  Supprimer
-                </button>
-              )}
-            </div>
-          ))
+          participants.map((participant) => {
+            const photoPath =
+              participant.photo_profil || participant?.utilisateur?.photo_profil
+            const pseudo = participant.pseudo || participant?.utilisateur?.pseudo || "Utilisateur"
+            const initials = pseudo
+              .split(" ")
+              .map((s) => s.charAt(0))
+              .join("")
+              .slice(0, 2)
+              .toUpperCase()
+
+            return (
+              <div className="participantsAffichage" key={participant.id}>
+                {photoPath ? (
+                  <img
+                    src={buildPublicUrl(photoPath)}
+                    alt="Photo de profil participant"
+                    className="ProfilPhoto"
+                    onClick={() => handleProfileClick(participant)}
+                  />
+                ) : (
+                  <div
+                    className="ProfilPhoto placeholder"
+                    onClick={() => handleProfileClick(participant)}
+                    title={pseudo}
+                  >
+                    {initials}
+                  </div>
+                )}
+                {pseudo}
+                {isCreator && (
+                  <button
+                    className="remove-participant-btn"
+                    onClick={() => handleRemoveParticipant(participant.utilisateur_id)}
+                    aria-label={`Supprimer ${participant.pseudo}`}
+                  >
+                    Supprimer
+                  </button>
+                )}
+              </div>
+            )
+          })
         ) : (
-          <p>Aucun participant disponible pour cette partie.</p>
+          <p>Aucun participant pour le moment.</p>
         )}
       </div>
 

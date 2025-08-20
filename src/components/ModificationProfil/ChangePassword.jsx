@@ -14,9 +14,28 @@ function ChangePassword({
   const [oldPassword, setOldPassword] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [pwdScore, setPwdScore] = useState(0)
   const modalRef = useRef(null)
   console.info("userId :", idUser)
   const authToken = localStorage.getItem("authToken")
+
+  // Vérification de robustesse du mot de passe
+  const isStrongPassword = (pwd) => {
+    // Au moins 12 caractères, 1 majuscule, 1 chiffre, 1 caractère spécial
+    return /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{12,}$/.test(pwd)
+  }
+
+  // Évalue la force et les règles non respectées
+  const evaluatePassword = (pwd) => {
+    const rules = [
+      { id: "len", label: "Au moins 12 caractères", ok: pwd.length >= 12 },
+      { id: "upper", label: "Au moins une majuscule", ok: /[A-Z]/.test(pwd) },
+      { id: "digit", label: "Au moins un chiffre", ok: /\d/.test(pwd) },
+      { id: "special", label: "Au moins un caractère spécial", ok: /[^A-Za-z0-9]/.test(pwd) },
+    ]
+    const score = rules.reduce((acc, r) => acc + (r.ok ? 1 : 0), 0)
+    setPwdScore(score)
+  }
 
   useEffect(() => {
     function handleOutsideClick(e) {
@@ -39,12 +58,20 @@ function ChangePassword({
   const handleChangePassword = async (e) => {
     e.preventDefault()
 
+    // Valider la robustesse AVANT de vérifier l'ancien mot de passe
+    if (!isStrongPassword(password)) {
+      toast.warning(
+        "Le nouveau mot de passe doit contenir au minimum 12 caractères, au moins une majuscule, un chiffre et un caractère spécial."
+      )
+      return
+    }
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/login`,
         {
           email,
-          password: oldPassword,
+          motDePasse: oldPassword,
         }
       )
 
@@ -81,7 +108,7 @@ function ChangePassword({
           import.meta.env.VITE_BACKEND_URL
         }/utilisateurs/${idUser}/changerMotDePasse`,
         {
-          password,
+          motDePasse: password,
         },
         {
           headers: {
@@ -136,8 +163,40 @@ function ChangePassword({
           <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value
+              setPassword(val)
+              evaluatePassword(val)
+            }}
           />
+          {/* Indicateur de robustesse */}
+          <div style={{ marginTop: 8 }}>
+            <div
+              aria-label="Barre force mot de passe"
+              style={{
+                height: 6,
+                borderRadius: 4,
+                background: "#eee",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  width: `${(pwdScore / 4) * 100}%`,
+                  height: "100%",
+                  transition: "width 200ms ease",
+                  background:
+                    pwdScore <= 1 ? "#e74c3c" : pwdScore === 2 ? "#f1c40f" : pwdScore === 3 ? "#27ae60" : "#2ecc71",
+                }}
+              />
+            </div>
+            <ul style={{ margin: "8px 0 0", paddingLeft: 18, fontSize: 12 }}>
+              <li style={{ color: password.length >= 12 ? "#27ae60" : "#e74c3c" }}>Au moins 12 caractères</li>
+              <li style={{ color: /[A-Z]/.test(password) ? "#27ae60" : "#e74c3c" }}>Au moins une majuscule</li>
+              <li style={{ color: /\d/.test(password) ? "#27ae60" : "#e74c3c" }}>Au moins un chiffre</li>
+              <li style={{ color: /[^A-Za-z0-9]/.test(password) ? "#27ae60" : "#e74c3c" }}>Au moins un caractère spécial</li>
+            </ul>
+          </div>
         </div>
         <div className="divChangePWSecond">
           <h2 className="titleChangePW">Confirmer le mot de passe:</h2>

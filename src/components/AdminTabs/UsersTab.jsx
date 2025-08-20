@@ -40,6 +40,19 @@ const UsersTab = () => {
 
   const authToken = localStorage.getItem("authToken")
 
+  // Vérification robustesse mot de passe
+  const [pwdScore, setPwdScore] = useState(0)
+  const isStrongPassword = (pwd) => /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{12,}$/.test(pwd)
+  const evaluatePassword = (pwd) => {
+    const rulesOk = [
+      pwd.length >= 12,
+      /[A-Z]/.test(pwd),
+      /\d/.test(pwd),
+      /[^A-Za-z0-9]/.test(pwd),
+    ]
+    setPwdScore(rulesOk.filter(Boolean).length)
+  }
+
   useEffect(() => {
     fetchUsers()
   }, [])
@@ -153,15 +166,17 @@ const UsersTab = () => {
             },
           }
         )
-        // 2) Mettre à jour le mot de passe s’il y a un newPassword
+        // 2) Mettre à jour le mot de passe s’il y a un newPassword (envoyer motDePasse)
         if (formData.newPassword && formData.newPassword.trim().length > 0) {
+          if (!isStrongPassword(formData.newPassword)) {
+            setError(
+              "Le nouveau mot de passe doit contenir au minimum 12 caractères, au moins une majuscule, un chiffre et un caractère spécial."
+            )
+            return
+          }
           await axios.put(
-            `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${
-              selectedUser.id
-            }/changerMotDePasse`,
-            {
-              password: formData.newPassword, // Le backend attend { password: ... }
-            },
+            `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${selectedUser.id}/changerMotDePasse`,
+            { motDePasse: formData.newPassword },
             {
               headers: {
                 Authorization: `Bearer ${authToken}`,
@@ -362,7 +377,7 @@ const UsersTab = () => {
               onChange={handleChange}
             />
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="pays">Pays :</label>
             <input
               type="text"
@@ -371,7 +386,7 @@ const UsersTab = () => {
               value={formData.pays}
               onChange={handleChange}
             />
-          </div>
+          </div> */}
 
           {/* AJOUT : Champ du nouveau mot de passe */}
           <div>
@@ -381,8 +396,33 @@ const UsersTab = () => {
               id="newPassword"
               name="newPassword"
               value={formData.newPassword}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e)
+                evaluatePassword(e.target.value)
+              }}
             />
+            {/* Indicateur de robustesse */}
+            <div style={{ marginTop: 8 }}>
+              <div
+                aria-label="Barre force mot de passe"
+                style={{ height: 6, borderRadius: 4, background: "#eee", overflow: "hidden" }}
+              >
+                <div
+                  style={{
+                    width: `${(pwdScore / 4) * 100}%`,
+                    height: "100%",
+                    transition: "width 200ms ease",
+                    background: pwdScore <= 1 ? "#e74c3c" : pwdScore === 2 ? "#f1c40f" : pwdScore === 3 ? "#27ae60" : "#2ecc71",
+                  }}
+                />
+              </div>
+              <ul style={{ margin: "8px 0 0", paddingLeft: 18, fontSize: 12 }}>
+                <li style={{ color: formData.newPassword.length >= 12 ? "#27ae60" : "#e74c3c" }}>Au moins 12 caractères</li>
+                <li style={{ color: /[A-Z]/.test(formData.newPassword) ? "#27ae60" : "#e74c3c" }}>Au moins une majuscule</li>
+                <li style={{ color: /\d/.test(formData.newPassword) ? "#27ae60" : "#e74c3c" }}>Au moins un chiffre</li>
+                <li style={{ color: /[^A-Za-z0-9]/.test(formData.newPassword) ? "#27ae60" : "#e74c3c" }}>Au moins un caractère spécial</li>
+              </ul>
+            </div>
           </div>
 
           <button type="submit">
