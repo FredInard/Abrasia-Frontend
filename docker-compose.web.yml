@@ -1,0 +1,14 @@
+@'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # URL de l'API que Vite va "baker" dans le build
+        VITE_BACKEND_URL: "http://localhost:4242"
+    container_name: abrs-web
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+'@ | Set-Content -Encoding utf8 docker-compose.web.yml
