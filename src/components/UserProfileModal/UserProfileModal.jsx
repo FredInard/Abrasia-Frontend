@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
-import { buildPublicUrl } from "../../utils/url.js"
 import "./UserProfileModal.scss"
+import PropTypes from "prop-types"
 
 export default function UserProfileModal({ user, onClose }) {
   const [userData, setUserData] = useState(null)
@@ -69,9 +69,9 @@ export default function UserProfileModal({ user, onClose }) {
         </button>
         {userData && (
           <>
-            {userData.photo_profil && (
+            {userData.photo_url && (
               <img
-                src={buildPublicUrl(userData.photo_profil)}
+                src={userData.photo_url}
                 alt={userData.pseudo}
                 className="profilePhoto"
               />
@@ -84,4 +84,13 @@ export default function UserProfileModal({ user, onClose }) {
       </div>
     </div>
   )
+}
+
+UserProfileModal.propTypes = {
+  user: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+    PropTypes.shape({ id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]) }),
+  ]).isRequired,
+  onClose: PropTypes.func.isRequired,
 }

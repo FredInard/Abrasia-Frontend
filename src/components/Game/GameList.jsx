@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./GameList.scss";
 import GameDetails from "../GameDetails/GameDetails";
-import { buildPublicUrl } from "../../utils/url.js";
 
 const GameList = ({ selectedDate }) => {
   const [games, setGames] = useState([]); // Stocke toutes les parties
@@ -105,9 +104,18 @@ const GameList = ({ selectedDate }) => {
               <div key={game.id} className="game-item" onClick={() => handleGameClick(game.id)}>
                 <h3>{game.titre}</h3>
                 <img
-                  src={buildPublicUrl(game.photo_scenario)}
+                  src={
+                    game.photo_scenario_url ||
+                    `${import.meta.env.VITE_BACKEND_URL}/public/_defaults/dragonBook.webp`
+                  }
                   alt={`Illustration de la partie ${game.titre}`}
                   className="illustrationPartie"
+                  onError={(e) => {
+                    const fallback = `${import.meta.env.VITE_BACKEND_URL}/public/_defaults/dragonBook.webp`
+                    if (e.currentTarget.src !== fallback) {
+                      e.currentTarget.src = fallback
+                    }
+                  }}
                 />
                 <p><strong>Lieu :</strong> {game.nb_max_joueurs}</p>
               </div>

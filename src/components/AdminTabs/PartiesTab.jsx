@@ -1,9 +1,8 @@
 // src/components/AdminTabs/PartiesTab.jsx
 
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
 import "./PartiesTab.scss"
-import { buildPublicUrl } from "../../utils/url.js"
 
 const PartiesTab = () => {
   const [parties, setParties] = useState([])
@@ -149,11 +148,7 @@ const PartiesTab = () => {
       lieu: party.lieu || "",
       photo_scenario: null, // Pour remplacer la photo uniquement si une nouvelle est sélectionnée
     })
-    setPhotoPreview(
-      party.photo_scenario
-        ? buildPublicUrl(party.photo_scenario)
-        : null
-    )
+    setPhotoPreview(party.photo_scenario_url || null)
     setExistingPhoto(party.photo_scenario || null)
     setIsEditing(true)
     console.info("Mode édition activé pour la partie :", party.id)
@@ -476,11 +471,11 @@ const PartiesTab = () => {
               </div>
             ) : (
               isEditing &&
-              existingPhoto && (
+              selectedParty?.photo_scenario_url && (
                 <div>
                   <p>Photo actuelle :</p>
                   <img
-                    src={buildPublicUrl(existingPhoto)}
+                    src={selectedParty.photo_scenario_url}
                     alt="Photo actuelle"
                     style={{ maxWidth: "200px", marginTop: "10px" }}
                   />
@@ -520,9 +515,9 @@ const PartiesTab = () => {
                 <tr key={party.id}>
                   <td>{party.id}</td>
                   <td>
-                    {party.photo_scenario ? (
+                    {party.photo_scenario_url ? (
                       <img
-                        src={buildPublicUrl(party.photo_scenario)}
+                        src={party.photo_scenario_url}
                         alt={party.titre}
                         style={{
                           width: "50px",

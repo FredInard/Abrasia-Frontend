@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
 import UserProfileModal from "../UserProfileModal/UserProfileModal" // Import de la modale de profil
-import { buildPublicUrl } from "../../utils/url.js"
 import "./ParticipantsList.scss"
+import PropTypes from "prop-types"
 
 const ParticipantsList = ({
   partyId,
@@ -14,8 +14,6 @@ const ParticipantsList = ({
   const [selectedParticipant, setSelectedParticipant] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
-
-  // Helper importé: buildPublicUrl
 
   console.info("selectedParticipant de ParticipantsList", selectedParticipant)
 
@@ -93,8 +91,8 @@ const ParticipantsList = ({
       <div className="participantsListBox">
         {participants.length > 0 ? (
           participants.map((participant) => {
-            const photoPath =
-              participant.photo_profil || participant?.utilisateur?.photo_profil
+            const photoUrl =
+              participant.photo_url || participant?.utilisateur?.photo_url
             const pseudo = participant.pseudo || participant?.utilisateur?.pseudo || "Utilisateur"
             const initials = pseudo
               .split(" ")
@@ -105,9 +103,9 @@ const ParticipantsList = ({
 
             return (
               <div className="participantsAffichage" key={participant.id}>
-                {photoPath ? (
+                {photoUrl ? (
                   <img
-                    src={buildPublicUrl(photoPath)}
+                    src={photoUrl}
                     alt="Photo de profil participant"
                     className="ProfilPhoto"
                     onClick={() => handleProfileClick(participant)}
@@ -145,6 +143,13 @@ const ParticipantsList = ({
       )}
     </div>
   )
+}
+
+ParticipantsList.propTypes = {
+  partyId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  isUpdated: PropTypes.bool,
+  isCreator: PropTypes.bool,
+  onParticipantRemoved: PropTypes.func,
 }
 
 export default ParticipantsList

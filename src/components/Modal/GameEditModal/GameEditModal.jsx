@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import { useState } from "react"
+import PropTypes from "prop-types"
 import "./GameEditModal.scss"
 
 const GameEditModal = ({ gameDetails, onClose, onSubmit }) => {
@@ -19,10 +20,8 @@ const GameEditModal = ({ gameDetails, onClose, onSubmit }) => {
   // et normaliser l'URL
   const normalizeUrl = (url) => url.replace(/([^:]\/)\/+/g, "$1")
   const [photoPreview, setPhotoPreview] = useState(() => {
-    if (gameDetails.photo_scenario) {
-      return normalizeUrl(
-        `${import.meta.env.VITE_BACKEND_URL}/${gameDetails.photo_scenario}`
-      )
+    if (gameDetails.photo_scenario_url) {
+      return gameDetails.photo_scenario_url
     }
     return null
   })
@@ -208,6 +207,20 @@ const GameEditModal = ({ gameDetails, onClose, onSubmit }) => {
       </div>
     </div>
   )
+}
+
+GameEditModal.propTypes = {
+  gameDetails: PropTypes.shape({
+    date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+    strict_nb_joueurs: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.number,
+      PropTypes.string,
+    ]),
+    photo_scenario_url: PropTypes.string,
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 }
 
 export default GameEditModal

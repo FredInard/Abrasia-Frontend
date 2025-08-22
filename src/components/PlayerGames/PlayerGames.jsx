@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import axios from "axios"
 import { jwtDecode } from "jwt-decode"; // Import pour décoder le token
 import GameDetails from "../GameDetails/GameDetails" // Import de GameDetails
 import "./PlayerGames.scss"
-import { buildPublicUrl } from "../../utils/url.js"
 
 const PlayerGames = () => {
   const [games, setGames] = useState([])
@@ -46,6 +45,7 @@ const PlayerGames = () => {
         )
         setGames(response.data)
       } catch (err) {
+        console.error("Erreur lors du chargement des parties:", err)
         setError("Erreur lors du chargement des parties.")
       } finally {
         setIsLoading(false)
@@ -55,11 +55,7 @@ const PlayerGames = () => {
     fetchPlayerGames()
   }, [playerId])
 
-  useEffect(() => {
-    filterGames()
-  }, [games, isMaster, showUpcoming])
-
-  const filterGames = () => {
+  const filterGames = useCallback(() => {
     const now = new Date()
     const filtered = games.filter((game) => {
       const isPlayerMaster = game.id_maitre_du_jeu === playerId
@@ -74,7 +70,11 @@ const PlayerGames = () => {
     })
 
     setFilteredGames(filtered)
-  }
+  }, [games, isMaster, showUpcoming, playerId])
+
+  useEffect(() => {
+    filterGames()
+  }, [filterGames])
 
   // Gestionnaire de clic pour ouvrir GameDetails
   const handleGameClick = (partyId) => {
@@ -102,6 +102,7 @@ const PlayerGames = () => {
         )
         setGames(response.data)
       } catch (err) {
+        console.error("Erreur lors du rafraîchissement des parties:", err)
         setError("Erreur lors du rafraîchissement des parties.")
       } finally {
         setIsLoading(false)
@@ -168,9 +169,18 @@ const PlayerGames = () => {
                 >
                   <h3>{game.titre}</h3>
                   <img
-                    src={buildPublicUrl(game.photo_scenario)}
-                    alt="illustration de la partie"
+                    src={
+                      game.photo_scenario_url ||
+                      `${import.meta.env.VITE_BACKEND_URL}/public/_defaults/dragonBook.webp`
+                    }
+                    alt={`Illustration de la partie ${game.titre}`}
                     className="illustrationPartie"
+                    onError={(e) => {
+                      const fallback = `${import.meta.env.VITE_BACKEND_URL}/public/_defaults/dragonBook.webp`
+                      if (e.currentTarget.src !== fallback) {
+                        e.currentTarget.src = fallback
+                      }
+                    }}
                   />
                   <p>
                     <strong>Date :</strong>{" "}

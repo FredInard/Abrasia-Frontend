@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
+import PropTypes from "prop-types"
 
 import ParticipantsList from "../ParticipantsList/ParticipantsList"
 import MealList from "../MealList/MealList"
@@ -15,9 +16,8 @@ import iconPlace from "../../assets/pics/iconPlaceMarker.svg"
 import iconTeam from "../../assets/pics/iconTeam.svg"
 import IconCar from "../../assets/pics/iconCar.svg"
 import iconPizza from "../../assets/pics/iconPizza.svg"
-import { buildPublicUrl } from "../../utils/url.js"
 
-const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
+const GameDetails = ({ partyId, onClose, onUpdate }) => {
   const [gameDetails, setGameDetails] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -75,6 +75,7 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
           setIsJoined(participationRes.data.isJoined)
         }
       } catch (err) {
+        console.error(err)
         setError("Erreur lors du chargement des détails de la partie.")
       } finally {
         setLoading(false)
@@ -82,7 +83,7 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
     }
 
     fetchGameDetails()
-  }, [partyId, user?.id, isUpdated])
+  }, [partyId, user, isUpdated])
 
   // Charger la liste des participants pour connaître leur nombre
   useEffect(() => {
@@ -400,9 +401,9 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
         </h1>
         <div className="GmEtDescription">
           <div className="game-master-info">
-            {gameDetails?.utilisateur?.photo_profil && (
+            {gameDetails?.utilisateur?.photo_url && (
               <img
-                src={buildPublicUrl(gameDetails.utilisateur.photo_profil)}
+                src={gameDetails.utilisateur.photo_url}
                 alt={`Maître du jeu ${gameDetails?.utilisateur?.pseudo || "Inconnu"}`}
                 className="userPhoto"
                 onClick={() => handleUserClick(gameDetails.id_maitre_du_jeu)}
@@ -546,14 +547,14 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
             {/* Si on peut rejoindre ET la partie n'est pas pleine */}
             {canJoin && !isPartyFull && (
               <button onClick={handleJoinParty} className="join-btn">
-                Rejoindre l'aventure
+                Rejoindre l&#39;aventure
               </button>
             )}
 
             {/* Bouton pour quitter la partie, si applicable */}
             {canLeave && (
               <button onClick={handleLeaveParty} className="leave-btn">
-                Quitter l'aventure
+                Quitter l&#39;aventure
               </button>
             )}
           </>
@@ -570,6 +571,12 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
       </div>
     </div>
   )
+}
+
+GameDetails.propTypes = {
+  partyId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  onClose: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func,
 }
 
 export default GameDetails

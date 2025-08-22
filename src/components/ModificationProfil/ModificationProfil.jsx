@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
 import { toast, ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { jwtDecode } from "jwt-decode";
 import ChangePassword from "./ChangePassword.jsx"
-import { buildPublicUrl } from "../../utils/url.js"
 import "./ModificationProfil.scss"
 import LogoutButton from "../../components/Logout/LogoutButton.jsx"
 
@@ -56,8 +55,6 @@ export default function ModificationProfil() {
     Authorization: `Bearer ${token}`,
   }
 
-  // Helper importé: buildPublicUrl
-
   // Charger les données utilisateur depuis le backend
   useEffect(() => {
     if (idUser) {
@@ -84,8 +81,8 @@ export default function ModificationProfil() {
           })
           console.info("setFormData :", formData)
 
-          if (res.data.photo_profil) {
-            setImageUrl(buildPublicUrl(res.data.photo_profil))
+          if (res.data.photo_url) {
+            setImageUrl(res.data.photo_url)
           }
         })
         .catch((err) => {
@@ -101,10 +98,10 @@ export default function ModificationProfil() {
 
   // Mettre à jour l'image quand l'utilisateur change
   useEffect(() => {
-    if (utilisateur.photo_profil) {
-      setImageUrl(buildPublicUrl(utilisateur.photo_profil))
+    if (utilisateur.photo_url) {
+      setImageUrl(utilisateur.photo_url)
     }
-  }, [utilisateur.photo_profil])
+  }, [utilisateur.photo_url])
 
   // Gérer les changements dans les champs du formulaire
   const handleChange = (e) => {
@@ -140,8 +137,8 @@ export default function ModificationProfil() {
           })
           console.info("setFormData :", formData)
 
-          if (res.data.photo_profil) {
-            setExistingPhotoUrl(buildPublicUrl(res.data.photo_profil))
+          if (res.data.photo_url) {
+            setExistingPhotoUrl(res.data.photo_url)
           }
         })
         .catch((err) => {
