@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useRef, useMemo } from "react"
 import "./Home.scss"
 
 import Calendar from "../components/schedule/Calendar"
@@ -34,15 +34,41 @@ export default function Home() {
     setSelectedDate(formattedDate) // Met à jour selectedDate sous un format homogène
   }
 
-  // Liste des vidéos
-  const videos = [videoFile1, videoFile2, videoFile3, videoFile4, videoFile5]
+  // Liste des vidéos (mémoïsée pour stabilité des dépendances)
+  const videos = useMemo(
+    () => [videoFile1, videoFile2, videoFile3, videoFile4, videoFile5],
+    []
+  )
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
+  const videoRef = useRef(null)
+  const [autoplayFailed, setAutoplayFailed] = useState(false)
 
   const handleVideoEnd = () => {
     setCurrentVideoIndex((prevIndex) =>
       prevIndex + 1 < videos.length ? prevIndex + 1 : 0
     ) // Passe à la vidéo suivante ou revient à la première
   }
+
+  // Tente de lire la vidéo au chargement et à chaque changement de source
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    const tryPlay = () => {
+      setAutoplayFailed(false)
+      const p = v.play()
+      if (p && typeof p.catch === "function") {
+        p.catch(() => setAutoplayFailed(true))
+      }
+    }
+    // Si la vidéo est déjà prête
+    if (v.readyState >= 2) {
+      tryPlay()
+    } else {
+      const onCanPlay = () => tryPlay()
+      v.addEventListener("canplay", onCanPlay, { once: true })
+      return () => v.removeEventListener("canplay", onCanPlay)
+    }
+  }, [currentVideoIndex, videos])
 
   return (
     <div>
@@ -53,15 +79,35 @@ export default function Home() {
         <section className="section-intro">
           <div className="video-wrapper">
             <video
+              ref={videoRef}
               src={videos[currentVideoIndex]}
               autoPlay
               loop={false} // Désactive la boucle pour utiliser l'enchaînement
               muted
+              playsInline
               className="video-background"
               onEnded={handleVideoEnd} // Passe à la vidéo suivante lorsque la vidéo se termine
+              onLoadedMetadata={() => {
+                const v = videoRef.current
+                if (!v) return
+                const p = v.play()
+                if (p && typeof p.catch === "function") p.catch(() => setAutoplayFailed(true))
+              }}
             >
               Votre navigateur ne supporte pas la lecture vidéo.
             </video>
+            {autoplayFailed && (
+              <button
+                className="tap-to-play"
+                onClick={() => {
+                  const v = videoRef.current
+                  if (!v) return
+                  v.play().then(() => setAutoplayFailed(false)).catch(() => setAutoplayFailed(true))
+                }}
+              >
+                Toucher pour démarrer la vidéo
+              </button>
+            )}
             <div className="overlay">
               <h1>
                 <img src={logoArpenteur} alt="Jeux de rôle" />
