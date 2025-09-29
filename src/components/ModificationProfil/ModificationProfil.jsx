@@ -176,22 +176,28 @@ export default function ModificationProfil() {
       formDataCopy.email = formDataCopy.email.trim().toLowerCase()
     }
 
-    // Formater la date au format 'YYYY-MM-DD' si nécessaire
+    // Formater la date en ISO minuit UTC si présente (YYYY-MM-DDT00:00:00.000Z)
     if (formDataCopy.date_naissance) {
-      const dateObj = new Date(formDataCopy.date_naissance)
-      const year = dateObj.getFullYear()
-      const month = String(dateObj.getMonth() + 1).padStart(2, "0")
-      const day = String(dateObj.getDate()).padStart(2, "0")
-      formDataCopy.date_naissance = `${year}-${month}-${day}`
+      const d = String(formDataCopy.date_naissance).slice(0, 10)
+      formDataCopy.date_naissance = `${d}T00:00:00.000Z`
     }
 
-    // Ajouter tous les champs au FormData, y compris 'role'
+    // Ajouter les champs au FormData
     Object.keys(formDataCopy).forEach((key) => {
-      // Vérifier si la valeur est définie, sinon utiliser une chaîne vide
-      if (formDataCopy[key] !== undefined && formDataCopy[key] !== null) {
-        formDataToSend.append(key, formDataCopy[key])
-      } else {
-        formDataToSend.append(key, "")
+      // Ne pas envoyer 'role' depuis ce formulaire
+      if (key === "role") return
+
+      // Gérer la photo: n'envoyer que s'il s'agit d'un vrai fichier
+      if (key === "photo_profil") {
+        if (formDataCopy.photo_profil instanceof File) {
+          formDataToSend.append("photo_profil", formDataCopy.photo_profil)
+        }
+        return
+      }
+
+      const value = formDataCopy[key]
+      if (value !== undefined && value !== null && value !== "") {
+        formDataToSend.append(key, value)
       }
     })
 
