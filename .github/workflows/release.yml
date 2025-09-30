@@ -1,4 +1,3 @@
-# .github/workflows/release.yml
 name: release
 on:
   push:
@@ -21,7 +20,6 @@ jobs:
         run: |
           echo "sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
           echo "date=$(date +%Y%m%d)" >> $GITHUB_OUTPUT
-          echo "repo_lower=${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
 
       - uses: docker/login-action@v3
         with:
@@ -34,6 +32,10 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
+          build-args: |
+            VITE_BACKEND_URL=/api
           tags: |
             ghcr.io/fredinard/abrasia-frontend:latest
             ghcr.io/fredinard/abrasia-frontend:${{ steps.meta.outputs.date }}-${{ steps.meta.outputs.sha }}
+          provenance: false
+          sbom: false

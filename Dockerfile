@@ -10,7 +10,7 @@
     COPY . .
     
     # Param API “baked” pour Vite (utilisé au build)
-    ARG VITE_BACKEND_URL=http://localhost:4242
+    ARG VITE_BACKEND_URL=/api
     ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
     
     # Build Vite
