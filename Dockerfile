@@ -1,3 +1,5 @@
+# C:\Users\davidp-silico\Documents\personel\Abrasia\Abrasia-Frontend\Dockerfile
+
 # ---------- build ----------
     FROM node:22-alpine AS build
     WORKDIR /app
