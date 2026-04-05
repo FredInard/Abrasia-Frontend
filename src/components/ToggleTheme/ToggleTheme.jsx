@@ -5,24 +5,42 @@ import sunIcon from "@iconify/icons-feather/sun"
 import moonIcon from "@iconify/icons-feather/moon"
 import "./ToggleTheme.scss" // Importation du fichier SCSS
 
+const MOBILE_BREAKPOINT = 768
+
 function ToggleTheme() {
   // État pour gérer le thème (true pour le mode sombre)
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth <= MOBILE_BREAKPOINT : false,
+  )
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("isDarkMode")
     return savedTheme !== null ? JSON.parse(savedTheme) : false
   })
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT)
+    }
+
+    handleResize()
+    window.addEventListener("resize", handleResize)
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
+
   // Effet pour appliquer le thème et sauvegarder la préférence
   useEffect(() => {
     localStorage.setItem("isDarkMode", JSON.stringify(isDarkMode))
-    if (isDarkMode) {
+    if (isDarkMode && !isMobile) {
       document.body.classList.add("dark-mode")
       document.body.classList.remove("light-mode")
     } else {
       document.body.classList.add("light-mode")
       document.body.classList.remove("dark-mode")
     }
-  }, [isDarkMode])
+  }, [isDarkMode, isMobile])
 
   // Fonction pour basculer le thème
   const toggleTheme = () => {
