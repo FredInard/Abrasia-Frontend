@@ -1,5 +1,5 @@
 // ToggleTheme.jsx
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Icon } from "@iconify/react"
 import sunIcon from "@iconify/icons-feather/sun"
 import moonIcon from "@iconify/icons-feather/moon"
@@ -9,7 +9,7 @@ function ToggleTheme() {
   // État pour gérer le thème (true pour le mode sombre)
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("isDarkMode")
-    return savedTheme !== null ? JSON.parse(savedTheme) : true
+    return savedTheme !== null ? JSON.parse(savedTheme) : false
   })
 
   // Effet pour appliquer le thème et sauvegarder la préférence
