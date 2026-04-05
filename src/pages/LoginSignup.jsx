@@ -3,6 +3,7 @@ import { AuthContext } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 import "./LoginSignup.scss";
 import axios from "axios";
+import { http } from "@/lib/http";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NavBar from "../components/NavBar/NavBar";
@@ -69,12 +70,12 @@ const LoginSignup = () => {
     }
 
     try {
-      // Adapter le champs attendu par le backend: `motDePasse` au lieu de `password`
+      // Adapter le champs attendu par le backend: `password` au lieu de `password`
       const loginPayload = {
         email: (loginForm.email || "").trim().toLowerCase(),
-        motDePasse: loginForm.password,
+        password: loginForm.password,
       };
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/login`, loginPayload);
+      const response = await http.post("/login", loginPayload);
 
       if (response.status === 200 && response.data.token) {
         const token = response.data.token;
@@ -117,13 +118,13 @@ const LoginSignup = () => {
     try {
       // N'envoyer au backend que les champs attendus (exclure confirmPassword)
       const { pseudo, nom, prenom, email, password } = signupForm;
-      // Adapter le champs attendu par le backend: `motDePasse` (utilisé par le middleware hashPassword)
+      // Adapter le champs attendu par le backend: `password` (utilisé par le middleware hashPassword)
       const payload = {
         pseudo,
         nom,
         prenom,
         email: (email || "").trim().toLowerCase(),
-        motDePasse: password,
+        password: password,
         cgu_accepted: true,
         cookies_accepted: true,
       };
